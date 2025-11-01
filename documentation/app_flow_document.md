@@ -1,0 +1,35 @@
+# App Flow Document for CodeGuide Starter Kit
+
+## Onboarding and Sign-In/Sign-Up
+
+When a new user visits the application, they land on the public homepage at the root URL. The page displays a hero section introducing the CodeGuide Starter Kit and presents prompts to sign up or sign in. By clicking the sign-up button, the user is directed to Clerk’s hosted sign-up flow which first requests an email address or a social provider choice if social login is enabled. After entering their details, the user verifies their email through a confirmation link and completes any additional profile setup fields defined in Clerk. If the user already has an account, they click the sign-in link to access Clerk’s sign-in form. This form collects their email and password or lets them choose a configured social provider. If the user forgets their password, they click the forgot password link, enter their email address, and receive a reset link via email. Once they set a new password, they are returned to the sign-in form to enter their credentials and authenticate. After successful authentication, Clerk issues a session token, stores the session in cookies, and redirects the user back to the application’s main route. Users can sign out at any time by clicking the sign-out button in the header, which calls Clerk’s sign-out API, clears the session cookies, and returns them to the public homepage.
+
+## Main Dashboard or Home Page
+
+Upon logging in, the user lands on the home page, which now presents the developer setup dashboard and the AI chat interface. The header updates to show navigation links including Home, Profile, and Sign Out, along with a toggle for light and dark mode. A sidebar appears on larger screens with quick links to Dashboard and API Examples. In the main content area, the developer setup dashboard guides the user through verifying environment variables for Clerk, Supabase, and AI services. Each step shows whether the service is connected or requires action. Below this setup section, the AI chat component becomes available if the user is signed in, providing an input field for sending messages and a stream of AI responses in a chat-style bubble format. The footer contains links to documentation files such as SUPABASE_CLERK_SETUP.md and CLAUDE.md.
+
+## Detailed Feature Flows and Page Transitions
+
+### Setup Dashboard Flow
+
+When the user arrives on the setup dashboard, the application reads environment variable values and tests connections to Clerk, Supabase, and the AI provider. If a service is not configured, a button labeled "Fix Configuration" appears. Clicking this button opens an embedded form where the user can paste their environment variable value and save it to a local `.env.local` file in their development environment. After saving, the user clicks "Recheck" to confirm the connection. Successful checks display a green checkmark and a message indicating readiness.
+
+### AI Chat Flow
+
+The user interacts with the AI chat by typing a message into the input field at the bottom of the chat interface and pressing Enter or clicking the send icon. The chat component uses the Vercel AI SDK to send the message to the backend at `/api/chat`. The server handler authenticates the request using the Clerk session token, selects the configured AI model (OpenAI or Anthropic), and then streams the AI’s response back to the client. On the client side, the chat component appends the AI’s streaming tokens to the chat window in real time. The user can continue the conversation by sending follow-up messages, and the history remains visible during the session.
+
+### Profile Management Flow
+
+Users access their profile page by clicking the Profile link in the header. This route is protected by Clerk’s middleware, so unauthenticated visits are redirected to sign-in. On the profile page, users see their basic information such as name, email, and profile picture, populated from Clerk. Users can update their display name or upload a new avatar through Clerk’s hosted profile management UI. After saving changes, the page displays a confirmation message and updates the header with the new user name or avatar. The user navigates back to the home page by clicking the Home link in the header or the logo in the navbar.
+
+## Settings and Account Management
+
+Theme preferences are managed via the theme toggle in the header. Toggling the switch instantly applies light or dark mode using CSS variables and persists the setting in local storage. Notification preferences and advanced account settings are available on the profile page under a "Settings" tab. Users can enable or disable email notifications for events such as password changes or new chat logs. For billing or subscription-based features, a dedicated billing page is accessible from a link on the profile page. This page fetches subscription status from Supabase and displays current plan details. Users can upgrade or cancel their subscription through secure payment forms integrated with a payment provider. After updating preferences or billing details, users click "Save" and see a success banner before returning to the main dashboard.
+
+## Error States and Alternate Paths
+
+If the user enters invalid credentials during sign-in, Clerk’s form displays an inline error message explaining whether the email or password is incorrect. On password reset attempts, if the email is not found, the form informs the user to double-check their address. During the setup dashboard checks, if the application fails to connect to a service, it shows an error message describing the failure, such as invalid API key or network timeout, and offers a retry button. In the AI chat interface, network interruptions or server errors display a red banner at the top of the chat area with instructions to retry the last message. When the Supabase client encounters an RLS violation, the API returns a forbidden error, and the client shows a message indicating insufficient permissions. Globally, uncaught exceptions trigger a fallback error page that offers a button to return to the home page and logs the error details for debugging.
+
+## Conclusion and Overall App Journey
+
+From first discovering the CodeGuide Starter Kit home page to creating an account and verifying their email, the user enjoys a seamless onboarding experience powered by Clerk. After signing in, they immediately see the developer setup dashboard guiding them through environment configuration. Once services are connected, the user explores the AI chat feature, engaging with large language models in real time. They personalize their experience on the profile page, adjusting themes, notifications, and billing settings. Throughout the application, intuitive navigation and clear error messages keep the user informed and in control. By following this smooth flow, the user reaches their end goal of having a fully configured starter project ready for further feature development and production deployment.
