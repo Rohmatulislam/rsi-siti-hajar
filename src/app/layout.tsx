@@ -2,7 +2,11 @@ import type { Metadata } from "next";
 import { Geist, Geist_Mono, Parkinsans } from "next/font/google";
 import { ClerkProvider } from "@clerk/nextjs";
 import { ThemeProvider } from "@/components/theme-provider";
-import "./globals.css";
+import { Navbar } from "@/components/navbar";
+import { Footer } from "@/components/footer";
+import FloatingChat from "@/components/floating-chat";
+import { Toaster } from "@/components/ui/toaster";
+import "@/app/globals.css";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -23,9 +27,9 @@ const parkinsans = Parkinsans({
 });
 
 export const metadata: Metadata = {
-  title: "CodeGuide Starter Kit",
+  title: "RSI Siti Hajar Mataram",
   description:
-    "A modern Next.js starter with TypeScript, TailwindCSS, shadcn/ui, Vercel AI SDK, Clerk, and Supabase",
+    "Platform layanan kesehatan digital RSI Siti Hajar Mataram - Cari dokter, buat janji temu, dan akses informasi kesehatan",
 };
 
 export default function RootLayout({
@@ -37,7 +41,7 @@ export default function RootLayout({
     <ClerkProvider>
       <html lang="en" suppressHydrationWarning>
         <body
-          className={`${geistSans.className} ${geistMono.className} ${parkinsans.className} antialiased`}
+          className={`${geistSans.variable} ${geistMono.variable} ${parkinsans.variable} antialiased`}
         >
           <ThemeProvider
             attribute="class"
@@ -45,7 +49,15 @@ export default function RootLayout({
             enableSystem
             disableTransitionOnChange
           >
-            {children}
+            <div className="min-h-screen flex flex-col">
+              <Navbar />
+              <main className="flex-grow">
+                {children}
+              </main>
+              <Footer />
+            </div>
+            <FloatingChat />
+            <Toaster />
           </ThemeProvider>
         </body>
       </html>

@@ -119,5 +119,57 @@
   }
   body {
     @apply bg-background text-foreground;
+    scroll-behavior: smooth;
   }
+}
+
+@layer utilities {
+  @keyframes scroll {
+    0% { transform: translateX(0); }
+    100% { transform: translateX(-50%); }
+  }
+  @keyframes scroll-reverse {
+    0% { transform: translateX(50%); }
+    100% { transform: translateX(0); }
+  }
+  @keyframes shine {
+    0% { 
+      background-position: -100% 0; 
+    }
+    100% { 
+      background-position: 200% 0; 
+    }
+  }
+  @keyframes text-shine {
+    0% {
+      background-position: 0 0;
+      mask-position: 0 0;
+    }
+    100% {
+      background-position: 200% 0;
+      mask-position: 200% 0;
+    }
+  }
+  .animate-scroll {
+    animation: scroll 30s linear infinite;
+  }
+  .animate-scroll-reverse {
+    animation: scroll-reverse 30s linear infinite;
+  }
+  .shine {
+    background: linear-gradient(90deg, transparent, rgba(255,255,255,0.4), transparent);
+    background-repeat: no-repeat;
+    background-size: 200% 100%;
+    animation: shine 3s infinite;
+  }
+  .text-shine {
+    background: linear-gradient(90deg, #fff 0%, #a7f3d0 30%, #0d9488 60%, #fff 100%);
+    background-size: 200% 100%;
+    background-clip: text;
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    animation: text-shine 3s infinite linear;
+    position: relative;
+  }
+
 }

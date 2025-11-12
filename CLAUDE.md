@@ -413,4 +413,22 @@ npm run lint         # Run ESLint
 - **Dark Mode**: Automatically applied to all shadcn components
 - **Mobile**: Responsive design with TailwindCSS breakpoints
 
+## Webhook Configuration
+
+For proper user synchronization between Clerk and Supabase:
+
+1. **Register Webhook in Clerk Dashboard**:
+   - Go to Clerk Dashboard > Settings > Webhooks
+   - Add endpoint: `https://[your-domain]/api/webhooks/clerk`
+   - Select events: `user.created`, `user.updated`, `user.deleted`
+
+2. **Set Webhook Secret**:
+   - Copy the webhook signing secret from Clerk dashboard
+   - Add to your environment variables as `CLERK_WEBHOOK_SECRET`
+
+3. **Required Events**:
+   - `user.created`: Sync new users (including OAuth signups) to Supabase
+   - `user.updated`: Update user information in Supabase
+   - `user.deleted`: Handle user deletion in Supabase
+
 This starter kit provides a solid foundation for building modern web applications with authentication, database integration, AI capabilities, and polished UI components.
