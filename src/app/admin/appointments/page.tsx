@@ -49,7 +49,7 @@ export default function AppointmentsPage() {
   const filteredAppointments = appointments.filter(appointment => 
     (appointment.doctors?.name && appointment.doctors.name.toLowerCase().includes(searchTerm.toLowerCase())) ||
     (appointment.users?.full_name && appointment.users.full_name.toLowerCase().includes(searchTerm.toLowerCase())) ||
-    appointment.status.toLowerCase().includes(searchTerm.toLowerCase())
+    (appointment.status && appointment.status.toLowerCase().includes(searchTerm.toLowerCase()))
   );
 
   const handleDelete = async (id: string) => {

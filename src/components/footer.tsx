@@ -36,15 +36,15 @@ export function Footer() {
   const contactInfo = [
     { 
       icon: <MapPin className="h-5 w-5" />, 
-      text: "Jl. Pejanggik No. 116, Mataram, NTB 83116" 
+      text: "Jl. Catur Warga No.08 Mataram " 
     },
     { 
       icon: <Phone className="h-5 w-5" />, 
-      text: "(0370) 123456" 
+      text: "(0370) 623498" 
     },
     { 
       icon: <Mail className="h-5 w-5" />, 
-      text: "info@rsisitihajar.co.id" 
+      text: "rsi_sitihajar@yahoo.co.id" 
     },
     { 
       icon: <Clock className="h-5 w-5" />, 

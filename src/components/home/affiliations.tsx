@@ -21,13 +21,13 @@ const affiliations = [
 
 export function Affiliations() {
   return (
-    <MotionSection 
-      className="py-12 bg-white dark:bg-gray-900"
+    <MotionSection
+      className="py-0"
       initial={{ opacity: 0 }}
       animate={{ opacity: 1 }}
       transition={{ duration: 0.6 }}
     >
-      <div className="container px-4 md:px-6">
+      <div className="px-0 md:px-0">
         <MotionDiv
           className="text-center mb-8"
           initial={{ y: 20, opacity: 0 }}
@@ -35,25 +35,26 @@ export function Affiliations() {
           transition={{ duration: 0.6, delay: 0.2 }}
         >
           <h2 className="text-2xl md:text-3xl font-bold text-gray-900 dark:text-white">Kemitraan Kami</h2>
+          <p className="text-gray-600 dark:text-gray-300 mt-3 max-w-3xl mx-auto">Menyediakan pelayanan kesehatan terbaik melalui kemitraan strategis dengan berbagai institusi kesehatan</p>
         </MotionDiv>
-        
+
         {/* Single Row Affiliations */}
         <div className="relative overflow-hidden py-4">
           <div className="flex animate-scroll whitespace-nowrap">
             {[...affiliations, ...affiliations].map((affiliation, index) => (
-              <MotionDiv 
-                key={`${affiliation.id}-${index}`} 
+              <MotionDiv
+                key={`${affiliation.id}-${index}`}
                 className={`mx-6 flex flex-col items-center justify-center shrink-0 ${index % 4 === 0 ? 'scale-90 hover:scale-105' : index % 4 === 1 ? 'scale-95 hover:scale-105' : index % 4 === 2 ? 'scale-100 hover:scale-110' : 'scale-95 hover:scale-105'}`}
                 initial={{ opacity: 0, scale: 0.8 }}
                 animate={{ opacity: 1, scale: 1 }}
                 transition={{ duration: 0.5, delay: (index % affiliations.length) * 0.1 }}
               >
                 <div className="bg-gray-100 dark:bg-gray-800 border border-gray-200 dark:border-gray-700 rounded-xl w-32 h-20 flex items-center justify-center p-2 transition-transform duration-300 hover:scale-105">
-                  <ImageWithFallback 
-                    src={affiliation.logo} 
-                    alt={affiliation.name} 
-                    width={100} 
-                    height={40} 
+                  <ImageWithFallback
+                    src={affiliation.logo}
+                    alt={affiliation.name}
+                    width={100}
+                    height={40}
                     className="object-contain max-h-full max-w-full"
                   />
                 </div>

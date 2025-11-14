@@ -2,7 +2,7 @@ import { NextRequest } from 'next/server';
 import { NextResponse } from 'next/server';
 import { createPatient, createAppointment, getPatientByNIK } from '@/lib/patient-service';
 import { generateQueueNumber } from '@/lib/queue-generator';
-import { registerToKhanza } from '@/lib/khanza-integration';
+import { registerToKhanza } from '@/lib/khanza/khanza-integration-final';
 
 export async function POST(request: NextRequest) {
   try {

@@ -1,5 +1,8 @@
+// src/lib/khanza/khanza-registration.ts
+// Fungsi-fungsi untuk registrasi pasien ke SIMRS Khanza
+
 import { PatientFormData, AppointmentFormData } from '@/lib/patient-service';
-import { KHANZA_CONFIG, KHANZA_MAPPING } from '@/lib/khanza-config';
+import { KHANZA_CONFIG } from './khanza-config';
 
 // Interface untuk data pasien dalam format SIMRS Khanza
 export interface KhanzaPatientData {
@@ -46,7 +49,7 @@ export interface KhanzaRegistrationData {
 // Fungsi untuk mengkonversi data pasien dari formulir kita ke format SIMRS Khanza
 export function convertToKhanzaPatient(patientData: Omit<PatientFormData, 'medicalRecordNumber'>): KhanzaPatientData {
   // Konversi jenis kelamin
-  const genderCode = KHANZA_MAPPING.GENDER;
+  const genderCode = KHANZA_CONFIG.GENDER;
   
   // Menghitung umur dari tanggal lahir
   const birthDate = patientData.birthDate ? new Date(patientData.birthDate) : new Date();
@@ -65,8 +68,8 @@ export function convertToKhanzaPatient(patientData: Omit<PatientFormData, 'medic
     alamat: patientData.address || 'Alamat Tidak Tersedia',
     no_tlp: patientData.phone || '',
     pekerjaan: '', // Tidak ada di formulir kita
-    stts_nikah: KHANZA_MAPPING.MARITAL_STATUS['BELUM_KAWIN'], // Default, bisa diupdate nanti
-    kd_pj: KHANZA_MAPPING.PAYOR['UMUM'], // Default, bisa diupdate nanti
+    stts_nikah: KHANZA_CONFIG.MARITAL_STATUS['BELUM_KAWIN'], // Default, bisa diupdate nanti
+    kd_pj: KHANZA_CONFIG.PAYOR['UMUM'], // Default, bisa diupdate nanti
     no_peserta: '', // Jika punya BPJS
     umur: `${age} Th`,
     pnd: '', // Pendidikan, tidak ada di formulir
@@ -83,15 +86,15 @@ export function convertToKhanzaRegistration(appointmentData: AppointmentFormData
 
   return {
     no_rkm_medis: medicalRecordNumber,
-    kd_dokter: (KHANZA_MAPPING.DOCTOR as Record<string, string>)[appointmentData.doctor] || 'DR001', // Default dokter
-    kd_poli: (KHANZA_MAPPING.POLYCLINIC as Record<string, string>)[appointmentData.polyclinic] || 'UMUM', // Default poli
+    kd_dokter: (KHANZA_CONFIG.DOCTOR as Record<string, string>)[appointmentData.doctor] || 'DR001', // Default dokter
+    kd_poli: (KHANZA_CONFIG.POLYCLINIC as Record<string, string>)[appointmentData.polyclinic] || 'UMUM', // Default poli
     tgl_registrasi: now.toISOString().split('T')[0], // Format YYYY-MM-DD
     jam_reg: timeString,
     no_urut: '1', // Akan di-generate oleh SIMRS Khanza
-    kd_pj: (KHANZA_MAPPING.PAYOR as Record<string, string>)['UMUM'], // Default penjamin
+    kd_pj: (KHANZA_CONFIG.PAYOR as Record<string, string>)['UMUM'], // Default penjamin
     no_reg: '', // Akan di-generate oleh SIMRS Khanza
     status_lanjut: 'Baru', // Baru atau Lama
-    kd_dpjp: (KHANZA_MAPPING.DOCTOR as Record<string, string>)[appointmentData.doctor] || 'DR001', // Default DPJP
+    kd_dpjp: (KHANZA_CONFIG.DOCTOR as Record<string, string>)[appointmentData.doctor] || 'DR001', // Default DPJP
     stts: 'Belum', // Status pemeriksaan
     stts_daftar: 'Lama', // Status daftar
     prioritas: '0', // Default prioritas
@@ -102,7 +105,7 @@ export function convertToKhanzaRegistration(appointmentData: AppointmentFormData
   };
 }
 
-// Fungsi untuk menghubungi SIMRS Khanza melalui akses database langsung atau modul bridging
+// Fungsi untuk registrasi pasien ke SIMRS Khanza
 export async function registerToKhanza(patientData: PatientFormData, appointmentData: AppointmentFormData) {
   const hasBridgingUrl = !!process.env.KHANZA_BASE_URL;
   const hasDatabaseConfig = !!(process.env.KHANZA_DB_HOST && process.env.KHANZA_DB_USER && process.env.KHANZA_DB_NAME);
@@ -132,12 +135,12 @@ export async function registerToKhanza(patientData: PatientFormData, appointment
 
 // Fungsi untuk registrasi melalui akses database langsung
 async function registerToKhanzaViaDatabase(patientData: PatientFormData, appointmentData: AppointmentFormData) {
-  // Impor fungsi dari modul khanza-db-integration
+  // Impor fungsi dari modul khanza-integration
   const {
     findPatientByNIKInKhanza,
     addPatientToKhanza,
     registerPatientToKhanzaOutpatient
-  } = await import('./khanza-db-integration');
+  } = await import('./khanza-integration-final');
 
   try {
     // Langkah 1: Cek apakah pasien sudah terdaftar di SIMRS Khanza berdasarkan NIK
@@ -183,14 +186,16 @@ async function registerToKhanzaViaDatabase(patientData: PatientFormData, appoint
     console.log('Mendaftarkan rawat jalan ke database SIMRS Khanza...');
     
     // Convert polyclinic and doctor to Khanza codes
-    const polyclinicCode = (KHANZA_MAPPING.POLYCLINIC as Record<string, string>)[appointmentData.polyclinic] || appointmentData.polyclinic;
-    const doctorCode = (KHANZA_MAPPING.DOCTOR as Record<string, string>)[appointmentData.doctor] || appointmentData.doctor;
+    const polyclinicCode = (KHANZA_CONFIG.POLYCLINIC as Record<string, string>)[appointmentData.polyclinic] || appointmentData.polyclinic;
+    const doctorCode = (KHANZA_CONFIG.DOCTOR as Record<string, string>)[appointmentData.doctor] || appointmentData.doctor;
     
-    const registrationNumber = await registerPatientToKhanzaOutpatient(
-      medicalRecordNumber,
-      polyclinicCode as string,
-      doctorCode as string
-    );
+    const registrationData = {
+      no_rkm_medis: medicalRecordNumber,
+      kd_poli: polyclinicCode as string,
+      kd_dokter: doctorCode as string
+    };
+
+    const registrationNumber = await registerPatientToKhanzaOutpatient(registrationData);
 
     // Kembalikan hasil untuk digunakan dalam sistem kita
     return {
@@ -305,7 +310,10 @@ async function registerToKhanzaViaBridging(patientData: PatientFormData, appoint
     console.log('Mendaftarkan rawat jalan ke SIMRS Khanza...');
     const registrationResponse = await fetch(`${khanzaBaseUrl}${KHANZA_CONFIG.ENDPOINTS.REGISTRATION}`, {
       method: 'POST',
-      headers: headers,
+      headers: {
+        ...headers,
+        'Content-Type': 'application/json'
+      },
       body: JSON.stringify(khanzaRegistration),
     });
 
@@ -335,7 +343,7 @@ async function registerToKhanzaViaBridging(patientData: PatientFormData, appoint
 // Fungsi untuk mengambil jadwal dokter dari SIMRS Khanza
 export async function getDoctorSchedulesFromKhanza(doctorCode?: string, date?: string) {
   // Impor fungsi dari modul khanza-db-integration
-  const { getDoctorSchedulesFromKhanza: getKhanzaSchedules } = await import('./khanza-db-integration');
+  const { getDoctorSchedulesFromKhanza: getKhanzaSchedules } = await import('./khanza-integration-final');
 
   try {
     const schedules = await getKhanzaSchedules(doctorCode, date);
@@ -349,7 +357,7 @@ export async function getDoctorSchedulesFromKhanza(doctorCode?: string, date?: s
 // Fungsi untuk mengambil daftar dokter aktif dari SIMRS Khanza
 export async function getActiveDoctorsFromKhanza() {
   // Impor fungsi dari modul khanza-db-integration
-  const { getActiveDoctorsFromKhanza: getKhanzaDoctors } = await import('./khanza-db-integration');
+  const { getActiveDoctorsFromKhanza: getKhanzaDoctors } = await import('./khanza-integration-final');
 
   try {
     const doctors = await getKhanzaDoctors();
@@ -417,9 +425,9 @@ export async function checkAvailableAppointments(date: string, polyclinic: strin
       headers['Authorization'] = `Bearer ${khanzaApiKey}`;
     }
 
-    let url = `${khanzaBaseUrl}${KHANZA_CONFIG.ENDPOINTS.REGISTRATION_AVAILABLE}?tanggal=${date}&kd_poli=${(KHANZA_MAPPING.POLYCLINIC as Record<string, string>)[polyclinic] || polyclinic}`;
+    let url = `${khanzaBaseUrl}${KHANZA_CONFIG.ENDPOINTS.REGISTRATION_AVAILABLE}?tanggal=${date}&kd_poli=${(KHANZA_CONFIG.POLYCLINIC as Record<string, string>)[polyclinic] || polyclinic}`;
     if (doctor) {
-      url += `&kd_dokter=${(KHANZA_MAPPING.DOCTOR as Record<string, string>)[doctor] || doctor}`;
+      url += `&kd_dokter=${(KHANZA_CONFIG.DOCTOR as Record<string, string>)[doctor] || doctor}`;
     }
 
     const response = await fetch(url, {

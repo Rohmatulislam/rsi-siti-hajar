@@ -2,7 +2,7 @@ import { db } from '@/lib/db';
 import { getPatientByUserId } from '@/lib/patient-service';
 import { getDoctorById } from '@/lib/doctor-service';
 import { createAppointment } from '@/lib/appointment-service';
-import { registerToKhanza } from '@/lib/khanza-integration';
+import { registerToKhanza } from '@/lib/khanza/khanza-integration-final';
 
 // Interface untuk detail pasien
 export interface PatientDetails {

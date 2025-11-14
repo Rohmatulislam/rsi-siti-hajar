@@ -31,7 +31,7 @@ export function DoctorCard({ doctor, schedules = [], cardStyle = 'default', avai
 
   const getCardClasses = () => {
     const baseClasses = "flex flex-col gap-4 rounded-3xl p-5 transition-all duration-300 min-h-[260px] overflow-hidden";
-    
+
     switch (cardStyle) {
       case 'glass':
         return `${baseClasses} bg-white/80 dark:bg-gray-900/80 backdrop-blur-lg border border-white/30 dark:border-gray-700/50 shadow-lg shadow-emerald-500/10`;

@@ -2,7 +2,7 @@
 
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
-import { MapPin, Clock, Star, HeartPulse, Stethoscope, Syringe } from "lucide-react";
+import { MapPin, Clock, Phone, Star, HeartPulse, Stethoscope, Syringe, Building, Users, Calendar } from "lucide-react";
 import Link from "next/link";
 import { useEffect, useState } from "react";
 import { motion } from "framer-motion";
@@ -26,6 +26,7 @@ const getIconForService = (title: string) => {
   if (lower.includes("dokter") || lower.includes("medis")) return HeartPulse;
   if (lower.includes("bedah") || lower.includes("operasi")) return Syringe;
   if (lower.includes("umum") || lower.includes("check")) return Stethoscope;
+  if (lower.includes("eksekutif") || lower.includes("executive")) return Building;
   return Star;
 };
 
@@ -67,39 +68,42 @@ export function FeaturedServices() {
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
             {/* Skeleton loaders */}
             {[...Array(8)].map((_, index) => (
-              <div 
-                key={index} 
-                className="group relative overflow-hidden rounded-2xl border bg-gray-100/70 backdrop-blur-lg shadow-md animate-pulse"
+              <div
+                key={index}
+                className="group relative overflow-hidden rounded-2xl border border-white/30 bg-white/70 backdrop-blur-lg shadow-md hover:shadow-xl hover:shadow-emerald-100/40 hover:scale-105 transition-all duration-300"
               >
-                <div className="relative aspect-[4/3] bg-gray-200 rounded-t-2xl"></div>
+                <div className="relative aspect-[4/3] bg-gray-100 rounded-t-2xl animate-pulse"></div>
                 <div className="relative p-4 z-10">
                   <div className="flex items-center gap-2 mb-2">
-                    <div className="bg-gray-200 rounded-full w-8 h-8"></div>
-                    <div className="bg-gray-200 h-4 flex-1 rounded"></div>
+                    <div className="bg-gray-200 rounded-full w-8 h-8 animate-pulse"></div>
+                    <div className="bg-gray-200 h-4 flex-1 rounded animate-pulse"></div>
                   </div>
-                  
+
                   <div className="space-y-2 mb-3">
-                    <div className="bg-gray-200 h-3 rounded w-full"></div>
-                    <div className="bg-gray-200 h-3 rounded w-4/5"></div>
+                    <div className="bg-gray-200 h-3 rounded w-full animate-pulse"></div>
+                    <div className="bg-gray-200 h-3 rounded w-4/5 animate-pulse"></div>
                   </div>
-                  
+
                   <div className="flex flex-wrap gap-1 mb-3">
-                    <div className="bg-gray-200 text-[9px] px-1.5 py-0.5 rounded w-10" />
-                    <div className="bg-gray-200 text-[9px] px-1.5 py-0.5 rounded w-12" />
+                    <div className="bg-gray-200 text-[9px] px-1.5 py-0.5 rounded w-10 animate-pulse" />
+                    <div className="bg-gray-200 text-[9px] px-1.5 py-0.5 rounded w-12 animate-pulse" />
                   </div>
-                  
+
                   <div className="space-y-1 mb-3">
                     <div className="flex items-center">
-                      <div className="bg-gray-200 rounded-full w-3 h-3 mr-1" />
-                      <div className="bg-gray-200 h-2 rounded w-24" />
+                      <div className="bg-gray-200 rounded-full w-3 h-3 mr-1 animate-pulse" />
+                      <div className="bg-gray-200 h-2 rounded w-24 animate-pulse" />
                     </div>
                     <div className="flex items-center">
-                      <div className="bg-gray-200 rounded-full w-3 h-3 mr-1" />
-                      <div className="bg-gray-200 h-2 rounded w-16" />
+                      <div className="bg-gray-200 rounded-full w-3 h-3 mr-1 animate-pulse" />
+                      <div className="bg-gray-200 h-2 rounded w-16 animate-pulse" />
                     </div>
                   </div>
-                  
-                  <div className="bg-gray-200 h-6 rounded-md w-full"></div>
+
+                  <div className="grid grid-cols-2 gap-2 mb-3">
+                    <div className="bg-gray-200 h-8 rounded-md animate-pulse"></div>
+                    <div className="bg-gray-200 h-8 rounded-md animate-pulse"></div>
+                  </div>
                 </div>
               </div>
             ))}
@@ -125,8 +129,8 @@ export function FeaturedServices() {
       <div className="py-12 text-center">
         <p className="text-muted-foreground mb-3">Belum ada layanan unggulan yang tersedia.</p>
         <p className="text-sm text-muted-foreground/80 mb-4">Silakan periksa kembali nanti atau hubungi administrator untuk informasi lebih lanjut.</p>
-        <Button 
-          onClick={() => window.location.reload()} 
+        <Button
+          onClick={() => window.location.reload()}
           variant="outline"
           className="border-emerald-400 text-emerald-600 hover:bg-emerald-50"
         >
@@ -158,9 +162,7 @@ export function FeaturedServices() {
                 initial={{ opacity: 0, y: 20 }}
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ duration: 0.5, delay: i * 0.08 }}
-                className="group relative overflow-hidden rounded-2xl border border-emerald-100/50 
-                bg-white/70 backdrop-blur-lg shadow-md hover:shadow-xl 
-                hover:shadow-emerald-100/40 hover:scale-[1.015] transition-all duration-500"
+                className="group relative overflow-hidden rounded-2xl border border-white/30 bg-white/70 backdrop-blur-lg shadow-md hover:shadow-xl hover:shadow-emerald-100/40 hover:scale-105 transition-all duration-300"
               >
                 {/* Gambar */}
                 <div className="relative aspect-[4/3] overflow-hidden rounded-t-2xl">
@@ -172,7 +174,7 @@ export function FeaturedServices() {
                       (e.target as HTMLImageElement).src = "/images/placeholder.jpg";
                     }}
                   />
-                  <div className="absolute top-2 left-2 bg-emerald-500 text-white text-[10px] px-2 py-0.5 rounded-full shadow-sm">
+                  <div className="absolute top-2 left-2 bg-gradient-to-r from-emerald-500 to-emerald-600 text-white text-[10px] px-2 py-0.5 rounded-full shadow-sm">
                     Unggulan
                   </div>
                 </div>
@@ -201,7 +203,7 @@ export function FeaturedServices() {
                     {service.features?.slice(0, 2).map((feature, i) => (
                       <Badge
                         key={i}
-                        className="bg-emerald-50 text-emerald-700 border border-emerald-200 text-[9px] px-1.5 py-0.5"
+                        className="bg-gradient-to-r from-emerald-100 to-emerald-200 text-emerald-800 text-[9px] px-1.5 py-0.5 border border-emerald-200"
                       >
                         {feature}
                       </Badge>
@@ -230,15 +232,34 @@ export function FeaturedServices() {
                         <span>{service.operating_hours}</span>
                       </div>
                     )}
+                    {service.contact_info && (
+                      <div className="flex items-center">
+                        <Phone className="h-2.5 w-2.5 mr-1 text-emerald-500" />
+                        <span>{service.contact_info}</span>
+                      </div>
+                    )}
                   </div>
 
                   {/* Tombol */}
-                  <Button
-                    asChild
-                    className="w-full bg-emerald-500 hover:bg-emerald-600 text-white text-[10px] py-1.5 rounded-md shadow-sm hover:shadow-md transition-all"
-                  >
-                    <Link href={`/services/featured/${service.id}`}>Lihat Detail</Link>
-                  </Button>
+                  <div className="grid grid-cols-2 gap-2">
+                    <Button
+                      asChild
+                      variant="outline"
+                      className="text-emerald-600 border-emerald-600 text-[10px] py-1.5 rounded-md shadow-sm hover:shadow-md transition-all"
+                    >
+                      <Link href={`/services/featured/${service.id}`}>Lihat Detail</Link>
+                    </Button>
+                    <Button
+                      asChild
+                      variant="outline"
+                      className="text-gray-600 border-gray-400 text-[10px] py-1.5 rounded-md shadow-sm hover:shadow-md transition-all"
+                    >
+                      <Link href={`/api/khanza/schedule?serviceId=${service.id}`} target="_blank">
+                        <Calendar className="h-3 w-3 mr-1" />
+                        Jadwal
+                      </Link>
+                    </Button>
+                  </div>
                 </div>
               </motion.div>
             );

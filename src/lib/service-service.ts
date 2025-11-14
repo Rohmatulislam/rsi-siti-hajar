@@ -519,6 +519,7 @@ export async function getDoctorsByServiceId(serviceId: string) {
         education: doctorData.education,
         certifications: doctorData.certifications,
         consultation_fee: doctorData.consultation_fee,
+        clinic_address: doctorData.clinic_address ?? "RS Islam Siti Hajar Mataram", // Tambahkan properti clinic_address
         slug: doctorData.slug,
         created_at: doctorData.created_at,
         updated_at: doctorData.updated_at

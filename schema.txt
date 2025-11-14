@@ -1,0 +1,20 @@
+Tabel detail_pemberian_obat(tgl_perawatan, jam, no_rawat, kode_brng, h_beli, biaya_obat, jml, total, status, kd_bangsal).
+tabel pemberian_obat(no_rawat, nama_obat, dosis, cara_pemberian, jadwal_pemberian, jlh_sisa_obat, status, waktu_simpan, kode_brng, tgl_pemberian, nm_unit, jlh_obat, jenis_obat, cek_jam1, cek_jam2, cek_jam3, cek_jam4, cek_jam5, cek_jam6, ket1 sampai dengan ket8, cek_dobel, nip_petugas1, nip_petugas2, sift)
+tabel kamar_inap(no_rawat, kd_rawat, trf_kamar, diagnosa_awal, tgl_masuk, jam_masuk, tanggal_keluar, jam_keluar).
+tabel reg_periksa(no_reg, no_rawat, jam_reg_kd_dokter, no_rkm_medis, kd_poli, p_jawab, almt_pj, hubunganpj, biaya_reg, stts, stts_daftar, status_lanjut_kd_pj, umurdaftar, sttsumur, status_bayar, status_poli).
+tabel detail_pemberian_obat(tgl_perawatan, jam, no_rawat, kode_brng, h_beli, biaya_obat, jml, total, status, kd_bangsal).
+tabel resep_dokter(no_resep, kode_brng, jml, aturan_pakai)
+tabel resep_obat(no_resep, tgl_perawatan, jam, no_rawat, kd_dokter, tgl_peresepan, jam_peresepan, status, tgl_penyerahan, jam_penyerahan)
+tabel penjualan(nota_jual, tgl_jual, nip, no_rkm_medis, nm_pasien, keterangan, jns_jual, ongkir, ppn, status, ks_bangsal, kd_rek, nama_bayar)
+tabel detailjual(nota_jual, kode_brng, kode_sat, h_jual, h_beli, jumlah, subtotal, total)
+tabel poliklinik(kd_poli, nm_poli, registrasi, registrasilama, status)
+tabel jadwal(kd_dokter, hari_kerja, jam_selesai, kd_poli, kuota)
+tabel dokter(kd_dokter, nm_dokter, jk, tmp_lahir, tgl_lahir, gol_drh, agama, almt_tgl, no_telp, stts_nikah, kd_sps, alumni, no_ijn_praktek, status)
+
+
+
+
+
+
+
+

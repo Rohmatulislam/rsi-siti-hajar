@@ -3,13 +3,17 @@
   "version": "0.1.0",
   "private": true,
   "scripts": {
-    "dev": "next dev --turbopack",
+    "dev": "next dev --turbopack --hostname 0.0.0.0",
+    "dev-local": "next dev --turbopack",
     "build": "next build",
     "start": "next start",
+    "start-network": "next start --hostname 0.0.0.0",
     "lint": "next lint",
     "supabase:db-push": "npx supabase db push",
     "supabase:start": "npx supabase start",
-    "supabase:gen-types": "npx supabase gen types typescript --project-id rfbsyhpuuptvfeumxnra > src/types/supabase.ts"
+    "supabase:gen-types": "npx supabase gen types typescript --project-id rfbsyhpuuptvfeumxnra > src/types/supabase.ts",
+    "khanza:test-connection": "ts-node scripts/test-khanza-connection.ts",
+    "khanza:verify-schema": "ts-node scripts/verify-khanza-schema.ts"
   },
   "dependencies": {
     "@ai-sdk/anthropic": "^1.2.12",
@@ -48,6 +52,7 @@
     "@tiptap/react": "^3.10.1",
     "@tiptap/starter-kit": "^3.10.1",
     "ai": "^4.3.19",
+    "axios": "^1.13.2",
     "class-variance-authority": "^0.7.1",
     "clsx": "^2.1.1",
     "cmdk": "^1.1.1",

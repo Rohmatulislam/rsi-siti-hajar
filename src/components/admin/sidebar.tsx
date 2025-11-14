@@ -1,4 +1,4 @@
-"use client";
+'use client';
 
 import Link from "next/link";
 import { 
@@ -32,6 +32,8 @@ const AdminSidebar = () => {
   // Menu navigasi admin
   const adminMenu = [
     { name: "Dashboard", href: "/admin", icon: LayoutDashboard },
+    { name: "Pendapatan Obat", href: "/admin/drug-revenue", icon: HeartPulse },
+    { name: "Jurnal Keuangan", href: "/admin/journals", icon: FileText },
     { name: "Manajemen Pengguna", href: "/admin/users", icon: Users },
     { name: "Manajemen Dokter", href: "/admin/doctors", icon: Stethoscope },
     { name: "Manajemen Jadwal", href: "/admin/schedules", icon: Clock },

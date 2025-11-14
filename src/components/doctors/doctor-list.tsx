@@ -93,7 +93,7 @@ export function DoctorList({
                 {dayFilter}
               </span>
             )}
-            <button 
+            <button
               onClick={onResetFilters}
               className="px-2 py-1 bg-gray-200 dark:bg-gray-700 text-gray-800 dark:text-gray-200 rounded-full text-xs hover:bg-gray-300 dark:hover:bg-gray-600 transition-colors"
             >

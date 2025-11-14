@@ -1,42 +1,35 @@
+// src/app/api/schedules/khanza/route.ts
 import { NextRequest } from 'next/server';
-import { getDoctorSchedulesFromKhanza } from '@/lib/khanza-integration';
+import { getDoctorSchedulesFromKhanzaDirect } from '@/lib/khanza/doctor-sync-service';
 
 export async function GET(request: NextRequest) {
   try {
     const { searchParams } = new URL(request.url);
-    const doctorCode = searchParams.get('doctorCode');
-    const date = searchParams.get('date');
-    
-    if (!date) {
-      // Jika tidak ada tanggal ditentukan, gunakan tanggal hari ini
-      const today = new Date().toISOString().split('T')[0];
-      date = today;
-    }
-    
-    const schedules = await getDoctorSchedulesFromKhanza(doctorCode || undefined, date);
-    
-    return new Response(
-      JSON.stringify({ 
-        success: true,
-        schedules,
-        message: `Jadwal dokter dari SIMRS Khanza untuk tanggal ${date}`
-      }),
-      { 
-        status: 200, 
-        headers: { 'Content-Type': 'application/json' } 
-      }
-    );
+    const doctorCode = searchParams.get('doctorCode') || undefined;
+    const date = searchParams.get('date') || undefined;
+
+    // Ambil jadwal dokter dari SIMRS Khanza
+    const schedules = await getDoctorSchedulesFromKhanzaDirect(doctorCode, date);
+
+    return new Response(JSON.stringify(schedules), {
+      status: 200,
+      headers: {
+        'Content-Type': 'application/json',
+      },
+    });
   } catch (error) {
-    console.error('Error in get doctor schedules from Khanza API:', error);
+    console.error('Error fetching doctor schedules from Khanza:', error);
+
     return new Response(
-      JSON.stringify({ 
-        success: false,
-        error: error instanceof Error ? error.message : 'Internal server error',
-        schedules: []
+      JSON.stringify({
+        error: 'Failed to fetch doctor schedules',
+        message: error instanceof Error ? error.message : 'Unknown error'
       }),
-      { 
-        status: 500, 
-        headers: { 'Content-Type': 'application/json' } 
+      {
+        status: 500,
+        headers: {
+          'Content-Type': 'application/json',
+        },
       }
     );
   }

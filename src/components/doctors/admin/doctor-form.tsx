@@ -84,7 +84,7 @@ export default function DoctorForm({ doctor, onSubmit, onCancel, loading = false
   });
 
   const watchName = form.watch('name');
-  
+
   // Efek untuk memperbarui slug ketika nama berubah (hanya untuk dokter baru)
   useEffect(() => {
     if (watchName && !doctor) {
@@ -95,7 +95,7 @@ export default function DoctorForm({ doctor, onSubmit, onCancel, loading = false
         .replace(/[^\w\s-]/g, '')
         .replace(/[\s_-]+/g, '-')
         .replace(/^-+|-+$/g, '');
-      
+
       form.setValue('slug', slug);
     }
   }, [watchName, doctor, form]);
@@ -104,10 +104,10 @@ export default function DoctorForm({ doctor, onSubmit, onCancel, loading = false
     setIsSubmitting(true);
     try {
       // Proses certifications menjadi array
-      const certificationsArray = data.certifications 
+      const certificationsArray = data.certifications
         ? data.certifications.split(',').map(cert => cert.trim()).filter(cert => cert)
         : [];
-      
+
       // Update data dengan certifications yang sudah diproses
       const formData: ProcessedDoctorData = {
         name: data.name,
@@ -121,7 +121,7 @@ export default function DoctorForm({ doctor, onSubmit, onCancel, loading = false
         consultation_fee: data.consultation_fee,
         slug: data.slug,
       };
-      
+
       await onSubmit(formData);
     } finally {
       setIsSubmitting(false);
@@ -203,9 +203,9 @@ export default function DoctorForm({ doctor, onSubmit, onCancel, loading = false
               <FormItem>
                 <FormLabel>Tahun Pengalaman</FormLabel>
                 <FormControl>
-                  <Input 
-                    type="number" 
-                    placeholder="Tahun pengalaman" 
+                  <Input
+                    type="number"
+                    placeholder="Tahun pengalaman"
                     {...field}
                     onChange={(e) => field.onChange(e.target.value ? parseInt(e.target.value) : 0)}
                   />
@@ -221,9 +221,9 @@ export default function DoctorForm({ doctor, onSubmit, onCancel, loading = false
               <FormItem>
                 <FormLabel>Biaya Konsultasi</FormLabel>
                 <FormControl>
-                  <Input 
-                    type="number" 
-                    placeholder="Biaya konsultasi" 
+                  <Input
+                    type="number"
+                    placeholder="Biaya konsultasi"
                     {...field}
                     onChange={(e) => field.onChange(e.target.value ? parseFloat(e.target.value) : 0)}
                   />
@@ -239,7 +239,7 @@ export default function DoctorForm({ doctor, onSubmit, onCancel, loading = false
               <FormItem>
                 <FormLabel>Foto Dokter</FormLabel>
                 <FormControl>
-                  <ImageUpload 
+                  <ImageUpload
                     value={value || undefined}
                     onChange={onChange}
                     folder="doctors"
@@ -281,16 +281,16 @@ export default function DoctorForm({ doctor, onSubmit, onCancel, loading = false
           )}
         />
         <div className="flex justify-end space-x-2 pt-4">
-          <Button 
-            type="button" 
-            variant="outline" 
+          <Button
+            type="button"
+            variant="outline"
             onClick={onCancel}
             disabled={isSubmitting}
           >
             Batal
           </Button>
-          <Button 
-            type="submit" 
+          <Button
+            type="submit"
             disabled={isSubmitting || loading}
           >
             {isSubmitting ? 'Memproses...' : doctor ? 'Simpan Perubahan' : 'Simpan'}

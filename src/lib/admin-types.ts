@@ -39,6 +39,8 @@ export interface Schedule {
   available: boolean;
   created_at: string;
   updated_at: string;
+  max_patients?: number;  // Jumlah maksimal pasien yang bisa mendaftar
+  current_patients?: number;  // Jumlah pasien yang sudah mendaftar
   doctors?: {
     name: string;
     specialty: string;

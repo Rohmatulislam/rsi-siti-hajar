@@ -68,9 +68,9 @@ export default function SchedulesPage() {
   // Filter jadwal berdasarkan pencarian
   const filteredSchedules = schedules.filter(schedule => 
     (schedule.doctors?.name && schedule.doctors.name.toLowerCase().includes(searchTerm.toLowerCase())) ||
-    schedule.date.toLowerCase().includes(searchTerm.toLowerCase()) ||
-    schedule.start_time.includes(searchTerm) ||
-    schedule.end_time.includes(searchTerm)
+    (schedule.date && schedule.date.toLowerCase().includes(searchTerm.toLowerCase())) ||
+    (schedule.start_time && schedule.start_time.includes(searchTerm)) ||
+    (schedule.end_time && schedule.end_time.includes(searchTerm))
   );
 
   const handleDelete = async (id: string) => {

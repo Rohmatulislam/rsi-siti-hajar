@@ -13,17 +13,18 @@ interface DoctorDialogProps {
   onSubmit: () => void;
 }
 
-export default function DoctorDialog({ 
-  open, 
-  onOpenChange, 
-  doctor, 
-  onSubmit 
+export default function DoctorDialog({
+  open,
+  onOpenChange,
+  doctor,
+  onSubmit
 }: DoctorDialogProps) {
   const [loading, setLoading] = useState(false);
 
   const handleSubmit = async (data: {
     name: string;
     specialty: string;
+    user_id?: string;
     image_url?: string;
     description?: string;
     experience_years?: number;
@@ -38,6 +39,7 @@ export default function DoctorDialog({
         await updateDoctor(doctor.id, {
           name: data.name,
           specialty: data.specialty,
+          user_id: data.user_id,
           image_url: data.image_url,
           description: data.description,
           experience_years: data.experience_years,
@@ -50,7 +52,7 @@ export default function DoctorDialog({
         await createDoctor({
           name: data.name,
           specialty: data.specialty,
-          user_id: data.user_id, // Menyertakan user_id
+          user_id: data.user_id || undefined, // Menyertakan user_id atau undefined
           image_url: data.image_url,
           description: data.description,
           experience_years: data.experience_years,
@@ -61,8 +63,10 @@ export default function DoctorDialog({
       }
       onSubmit();
       onOpenChange(false);
-    } catch (error) {
+    } catch (error: any) {
       console.error("Error saving doctor:", error);
+      // Tampilkan pesan error kepada pengguna
+      alert(error.message || "Terjadi kesalahan saat menyimpan dokter. Silakan coba lagi.");
     } finally {
       setLoading(false);
     }

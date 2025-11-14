@@ -1,19 +1,20 @@
 import { createSupabaseServerClient } from './supabase-server';
 
-// Interface untuk objek db yang mensimulasikan perilaku dari node-postgres (pg)
+// Interface untuk objek db yang mensimulasikan perilaku dari node-postgres (pg) dan mysql2
 interface DbInterface {
   query: (text: string, params?: any[]) => Promise<any>;
+  execute: (text: string, params?: any[]) => Promise<any>;
 }
 
-// Fungsi untuk membuat wrapper Supabase yang mensimulasikan perilaku dari node-postgres (pg)
+// Fungsi untuk membuat wrapper Supabase yang mensimulasikan perilaku dari node-postgres (pg) dan mysql2
 export const db: DbInterface = {
   query: async (text: string, params?: any[]) => {
     // Mendapatkan server client Supabase
     const supabase = await createSupabaseServerClient(true); // Gunakan service role untuk akses penuh
-    
+
     // Parsing query SQL sederhana untuk menentukan operasi
     const lowerText = text.toLowerCase().trim();
-    
+
     if (lowerText.startsWith('select')) {
       return handleSelectQuery(text, params, supabase);
     } else if (lowerText.startsWith('insert')) {
@@ -24,6 +25,39 @@ export const db: DbInterface = {
       return handleDeleteQuery(text, params, supabase);
     } else {
       throw new Error(`Unsupported query type for: ${text}`);
+    }
+  },
+  execute: async (text: string, params?: any[]) => {
+    // execute hampir sama dengan query, tapi mengembalikan format mysql2
+    const lowerText = text.toLowerCase().trim();
+
+    if (lowerText.startsWith('select')) {
+      const result = await handleSelectQuery(text, params, await createSupabaseServerClient(true));
+      // Format mysql2 untuk SELECT: [rows, fields]
+      return [result.rows, null];
+    } else {
+      // Untuk INSERT/UPDATE/DELETE: format mysql2 [OkPacket, fields]
+      const supabase = await createSupabaseServerClient(true);
+      let queryResult;
+
+      if (lowerText.startsWith('insert')) {
+        queryResult = await handleInsertQuery(text, params, supabase);
+      } else if (lowerText.startsWith('update')) {
+        queryResult = await handleUpdateQuery(text, params, supabase);
+      } else if (lowerText.startsWith('delete')) {
+        queryResult = await handleDeleteQuery(text, params, supabase);
+      } else {
+        throw new Error(`Unsupported query type for: ${text}`);
+      }
+
+      // Format OkPacket sederhana
+      const okPacket = {
+        affectedRows: queryResult.rowCount,
+        insertId: queryResult.rows?.[0]?.id || 0,
+        changedRows: queryResult.rowCount
+      };
+
+      return [okPacket, null];
     }
   }
 };

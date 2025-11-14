@@ -13,11 +13,11 @@ interface DoctorDialogProps {
   onSubmit: () => void;
 }
 
-export default function DoctorDialog({ 
-  open, 
-  onOpenChange, 
-  doctor, 
-  onSubmit 
+export default function DoctorDialog({
+  open,
+  onOpenChange,
+  doctor,
+  onSubmit
 }: DoctorDialogProps) {
   const [loading, setLoading] = useState(false);
 
@@ -33,8 +33,10 @@ export default function DoctorDialog({
       }
       onSubmit();
       onOpenChange(false);
-    } catch (error) {
+    } catch (error: any) {
       console.error("Error saving doctor:", error);
+      // Tampilkan pesan error kepada pengguna
+      alert(error.message || "Terjadi kesalahan saat menyimpan dokter. Silakan coba lagi.");
     } finally {
       setLoading(false);
     }

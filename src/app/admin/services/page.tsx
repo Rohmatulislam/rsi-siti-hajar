@@ -52,9 +52,9 @@ export default function ServicesPage() {
 
   // Filter layanan berdasarkan pencarian
   const filteredServices = services.filter(service => 
-    service.title.toLowerCase().includes(searchTerm.toLowerCase()) ||
+    (service.title && service.title.toLowerCase().includes(searchTerm.toLowerCase())) ||
     (service.category && service.category.toLowerCase().includes(searchTerm.toLowerCase())) ||
-    service.description.toLowerCase().includes(searchTerm.toLowerCase())
+    (service.description && service.description.toLowerCase().includes(searchTerm.toLowerCase()))
   );
 
   const handleDelete = async (id: string) => {
