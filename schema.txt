@@ -1,3 +1,5 @@
+tabel pasien(no_rkm_medis, nm_pasien, no_ktp, jk, tmp_lahir, tgl_lahir, nm_ibu, alamat, gol_darah, pekerjaan, stts_nikah, agama, tgl_daftar, no_tlp, umur, pnd, keluarga, namakeluarga, kd_pj, no_peserta, kd_kel, kd_kec, kd_kb, pekerjaanpj, alamatpj, kelurahanpj, kecamatanpj, kabupatenpj, perusahaan_pasien, suku_bangsa, bahasa_pasien, cacat_fisik, email, nip, propinsipj)
+tabel permintaan_lab(noorder, no_rawat, tgl_permintaan, jam_permintan, tgl_sampel, jam_sampel, tgl_hasil, jam_hasil, dokter_perujuk, status, informasi_tambahan, diagnosa_klinis)
 Tabel detail_pemberian_obat(tgl_perawatan, jam, no_rawat, kode_brng, h_beli, biaya_obat, jml, total, status, kd_bangsal).
 tabel pemberian_obat(no_rawat, nama_obat, dosis, cara_pemberian, jadwal_pemberian, jlh_sisa_obat, status, waktu_simpan, kode_brng, tgl_pemberian, nm_unit, jlh_obat, jenis_obat, cek_jam1, cek_jam2, cek_jam3, cek_jam4, cek_jam5, cek_jam6, ket1 sampai dengan ket8, cek_dobel, nip_petugas1, nip_petugas2, sift)
 tabel kamar_inap(no_rawat, kd_rawat, trf_kamar, diagnosa_awal, tgl_masuk, jam_masuk, tanggal_keluar, jam_keluar).
@@ -8,9 +10,9 @@ tabel resep_obat(no_resep, tgl_perawatan, jam, no_rawat, kd_dokter, tgl_peresepa
 tabel penjualan(nota_jual, tgl_jual, nip, no_rkm_medis, nm_pasien, keterangan, jns_jual, ongkir, ppn, status, ks_bangsal, kd_rek, nama_bayar)
 tabel detailjual(nota_jual, kode_brng, kode_sat, h_jual, h_beli, jumlah, subtotal, total)
 tabel poliklinik(kd_poli, nm_poli, registrasi, registrasilama, status)
-tabel jadwal(kd_dokter, hari_kerja, jam_selesai, kd_poli, kuota)
+tabel jadwal(kd_dokter, hari_kerja, jam_mulai, jam_selesai, kd_poli, kuota) 
 tabel dokter(kd_dokter, nm_dokter, jk, tmp_lahir, tgl_lahir, gol_drh, agama, almt_tgl, no_telp, stts_nikah, kd_sps, alumni, no_ijn_praktek, status)
-
+tabel booking_registrasi(tanggal_booking, jam_booking, no_rkm_medis, tanggal_periksa, kd_dokter, kd_poli, no_reg, kd_pj, limit_reg, waktu_kunjungan, status)
 
 
 

@@ -20,7 +20,7 @@ export function Navbar() {
   const [mounted, setMounted] = useState(false);
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   // Gunakan nilai default yang sama antara server dan client
-  const [navbarClasses, setNavbarClasses] = useState('bg-transparent text-white');
+  const [navbarClasses, setNavbarClasses] = useState('bg-white/90 text-gray-900');
   const { theme, setTheme } = useTheme();
   const { userId, isSignedIn } = useAuth();
   const { user } = useUser();
@@ -37,77 +37,8 @@ export function Navbar() {
   useEffect(() => {
     if (typeof window === 'undefined') return; // Hanya jalankan di client side
 
-    let ticking = false;
-
-    const handleScroll = () => {
-      if (!ticking) {
-        requestAnimationFrame(() => {
-          const scrollPosition = window.scrollY;
-          // Menentukan apakah berada di posisi atas (atas hero section)
-          if (scrollPosition < 100) {
-            setNavbarClasses('bg-transparent text-white');
-          } else {
-            // Cek elemen yang berada di bawah navbar untuk menentukan warna teks
-            const navbarHeight = 64; // tinggi navbar dalam px
-            const pointBelowNavbar = document.elementFromPoint(
-              window.innerWidth / 2,
-              navbarHeight + 10
-            );
-
-            if (pointBelowNavbar) {
-              // Cek background color dari elemen yang berada di bawah navbar
-              let element: Element | null = pointBelowNavbar;
-              let bgColor = '';
-
-              // Terus periksa ke atas hirarki DOM sampai menemukan warna background
-              while (element && element !== document.body && !bgColor) {
-                const computedStyle = window.getComputedStyle(element);
-                bgColor = computedStyle.backgroundColor;
-
-                if (bgColor && bgColor !== 'transparent' && bgColor !== 'rgba(0, 0, 0, 0)') {
-                  break;
-                }
-
-                element = element.parentElement;
-              }
-
-              // Jika tidak menemukan warna background, gunakan warna default
-              if (!bgColor || bgColor === 'transparent' || bgColor === 'rgba(0, 0, 0, 0)') {
-                setNavbarClasses('bg-white/90 text-gray-900');
-              } else {
-                // Ambil nilai RGB dari warna background
-                const match = bgColor.match(/\d+/g);
-                if (match && match.length >= 3) {
-                  const [r, g, b] = match.map(Number);
-                  // Hitung luminance untuk menentukan apakah background terang atau gelap
-                  // Formula: 0.299 * R + 0.587 * G + 0.114 * B
-                  const luminance = (0.299 * r + 0.587 * g + 0.114 * b);
-
-                  if (luminance > 128) {
-                    // Background terang - gunakan teks gelap
-                    setNavbarClasses('bg-white/90 text-gray-900');
-                  } else {
-                    // Background gelap - gunakan teks putih
-                    setNavbarClasses('bg-white/10 text-white');
-                  }
-                } else {
-                  // Jika tidak bisa menghitung luminance, default ke teks gelap
-                  setNavbarClasses('bg-white/90 text-gray-900');
-                }
-              }
-            } else {
-              // Default ke latar belakang putih transparan dengan teks gelap jika tidak bisa mendeteksi
-              setNavbarClasses('bg-white/90 text-gray-900');
-            }
-          }
-          ticking = false;
-        });
-        ticking = true;
-      }
-    };
-
-    window.addEventListener('scroll', handleScroll, { passive: true });
-    return () => window.removeEventListener('scroll', handleScroll);
+    // Selalu gunakan warna navbar putih, tidak perlu mengubah saat scroll
+    setNavbarClasses('bg-white/90 text-gray-900');
   }, []);
 
   return (

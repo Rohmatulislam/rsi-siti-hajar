@@ -1,217 +1,138 @@
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
-import { Button } from "@/components/ui/button";
-import { Badge } from "@/components/ui/badge";
-import { 
-  Building,
-  Syringe,
+import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
+import { Button } from '@/components/ui/button';
+import Link from 'next/link';
+import {
   HeartPulse,
+  Users,
+  Calendar,
   MapPin,
   Clock,
-  Phone,
-  Star,
-  Calendar,
-  User,
   Stethoscope,
-  Shield,
-  Coffee
-} from "lucide-react";
-import Link from "next/link";
+  FileText,
+  Star,
+  ChevronRight
+} from 'lucide-react';
+import { getExecutiveDoctors } from '@/lib/executive/executive-service';
+import ExecutiveSpecializations from './executive-specializations';
+import { initializeExecutiveSystem } from '@/lib/executive/executive-init';
 
-export default function ExecutiveServicePage() {
+// Inisialisasi sistem executive saat halaman dimuat
+if (typeof window === 'undefined') { // Hanya di sisi server
+  initializeExecutiveSystem();
+}
+
+async function ExecutivePage() {
+  // Dalam implementasi sebenarnya, kita bisa mendapatkan data dokter untuk menampilkan informasi tambahan
+  // const doctors = await getExecutiveDoctors();
+
   return (
-    <div className="min-h-screen bg-background py-8">
-      <div className="container mx-auto px-4">
-        <div className="flex items-center mb-6">
-          <Button asChild variant="outline" className="mr-4">
-            <Link href="/services/featured">← Kembali</Link>
-          </Button>
-          <h1 className="text-2xl font-bold text-foreground">Layanan Eksekutif</h1>
-        </div>
-        
-        <Card className="overflow-hidden bg-card text-foreground border-border mb-8">
-          <div className="w-full h-64 overflow-hidden">
-            <img 
-              src="/placeholder.jpg" 
-              alt="Layanan Eksekutif" 
-              className="w-full h-full object-cover"
-            />
-          </div>
-          <CardHeader>
-            <div className="flex items-center">
-              <div className="bg-emerald-100 dark:bg-emerald-900/30 p-3 rounded-lg mr-4">
-                <Building className="h-8 w-8 text-emerald-600 dark:text-emerald-400" />
+    <div className="min-h-screen bg-gradient-to-b from-white to-emerald-50 text-gray-800 overflow-hidden pt-16">
+      {/* HERO SECTION */}
+      <section
+        className="relative w-full h-[50vh] bg-cover bg-center bg-no-repeat flex items-center"
+        style={{ backgroundImage: "url('/images/bener/baner-unggulan.jpg')" }}
+      >
+        {/* Overlay gradient */}
+        <div className="absolute inset-0 bg-gradient-to-r from-emerald-950/70 via-emerald-900/50 to-transparent"></div>
+
+        {/* Hero Content */}
+        <div className="relative z-10 container mx-auto px-6 text-white">
+          <div className="max-w-3xl">
+            <h1 className="text-3xl md:text-4xl font-bold mb-4 leading-tight">
+              Poliklinik Eksekutif
+            </h1>
+            <p className="text-lg text-emerald-100 mb-6">
+              Pelayanan cepat, nyaman, dan personal bagi pasien yang aktif
+            </p>
+
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-4 text-sm">
+              <div className="flex items-start">
+                <CheckIcon className="h-5 w-5 text-emerald-300 mt-0.5 mr-2 flex-shrink-0" />
+                <span>Pelayanan rawat jalan premium tanpa antre panjang</span>
               </div>
-              <div>
-                <CardTitle className="text-2xl text-foreground mb-2">Layanan Eksekutif</CardTitle>
-                <p className="text-muted-foreground">Pelayanan khusus dengan fasilitas premium untuk kenyamanan maksimal pasien dan keluarga</p>
+              <div className="flex items-start">
+                <CheckIcon className="h-5 w-5 text-emerald-300 mt-0.5 mr-2 flex-shrink-0" />
+                <span>Jadwal konsultasi fleksibel</span>
+              </div>
+              <div className="flex items-start">
+                <CheckIcon className="h-5 w-5 text-emerald-300 mt-0.5 mr-2 flex-shrink-0" />
+                <span>Ruang tunggu eksklusif</span>
+              </div>
+              <div className="flex items-start">
+                <CheckIcon className="h-5 w-5 text-emerald-300 mt-0.5 mr-2 flex-shrink-0" />
+                <span>Ditangani dokter spesialis pilihan</span>
               </div>
             </div>
-          </CardHeader>
-          <CardContent>
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-              <div>
-                <h3 className="font-semibold text-lg mb-3 text-foreground">Tentang Layanan</h3>
-                <p className="text-muted-foreground mb-4">
-                  RS Islam Siti Hajar Mataram memahami kebutuhan masyarakat modern yang menginginkan pelayanan kesehatan 
-                  yang efisien, nyaman, dan privat tanpa mengurangi mutu pelayanan medis. Untuk itu, kami menghadirkan 
-                  Poliklinik Eksekutif, sebuah layanan rawat jalan yang dirancang khusus bagi pasien yang mengutamakan 
-                  kenyamanan, waktu, dan pelayanan personal.
-                </p>
-                
-                <h4 className="font-medium mb-2 text-foreground">Keunggulan Layanan:</h4>
-                <ul className="list-disc list-inside text-muted-foreground space-y-1">
-                  <li>Pelayanan tanpa antre panjang</li>
-                  <li>Jadwal konsultasi yang fleksibel</li>
-                  <li>Ruang tunggu yang eksklusif dengan suasana tenang dan profesional</li>
-                  <li>Setiap pasien ditangani langsung oleh dokter spesialis pilihan dengan dukungan tim medis berpengalaman</li>
-                  <li>Pemeriksaan berjalan cepat dan menyeluruh</li>
-                  <li>Pendampingan personal dari staf administrasi khusus</li>
-                </ul>
-                
-                <h4 className="font-medium mt-4 mb-2 text-foreground">Lingkup Spesialisasi:</h4>
-                <ul className="list-disc list-inside text-muted-foreground space-y-1">
-                  <li>Anak</li>
-                  <li>Penyakit Dalam</li>
-                  <li>Ortopedi</li>
-                  <li>Bedah Anak</li>
-                  <li>Bedah Umum</li>
-                  <li>Bedah Digestif</li>
-                  <li>Bedah Onkologi</li>
-                  <li>Bedah Urologi</li>
-                  <li>Saraf</li>
-                  <li>Kulit & Kelamin</li>
-                  <li>Rehabilitasi Medik</li>
-                  <li>Psikiatri</li>
-                  <li>Paru</li>
-                </ul>
-                
-                <h4 className="font-medium mt-4 mb-2 text-foreground">Layanan Terintegrasi:</h4>
-                <ul className="list-disc list-inside text-muted-foreground space-y-1">
-                  <li>Layanan penunjang seperti laboratorium, radiologi, dan farmasi terintegrasi secara digital</li>
-                  <li>Hasil pemeriksaan dapat langsung diakses oleh dokter untuk mempercepat proses diagnosis dan terapi</li>
-                  <li>Proses pendaftaran, pembayaran, hingga pengaturan jadwal kunjungan berikutnya dilakukan dengan pendampingan khusus</li>
-                </ul>
-              </div>
-              
-              <div>
-                <h3 className="font-semibold text-lg mb-3 text-foreground">Detail Informasi</h3>
-                
-                <div className="space-y-4">
-                  <div className="flex items-start">
-                    <MapPin className="h-5 w-5 text-emerald-600 dark:text-emerald-400 mr-3 mt-0.5" />
-                    <div>
-                      <h4 className="font-medium text-foreground">Lokasi</h4>
-                      <p className="text-muted-foreground">Gedung VIP Lantai 3, Sayap Timur</p>
-                    </div>
+          </div>
+        </div>
+
+        {/* Wave divider */}
+        <div className="absolute bottom-0 left-0 right-0 overflow-hidden leading-[0]">
+          <svg
+            viewBox="0 0 1440 180"
+            className="w-full h-[90px] text-white fill-current"
+            preserveAspectRatio="none"
+          >
+            <path d="M0,64L48,90.7C96,117,192,171,288,170.7C384,171,480,117,576,112C672,107,768,149,864,160C960,171,1056,149,1152,133.3C1248,117,1344,107,1392,101.3L1440,96L1440,180L0,180Z" />
+          </svg>
+        </div>
+      </section>
+
+      {/* CONTENT SECTION */}
+      <section className="relative py-16 bg-gradient-to-b from-white to-emerald-50">
+        <div className="absolute inset-0">
+          <div className="absolute top-40 left-1/2 transform -translate-x-1/2 w-[500px] h-[500px] bg-emerald-100/40 blur-3xl rounded-full"></div>
+        </div>
+
+        <div className="relative container mx-auto px-4 md:px-6">
+          <div className="bg-white/80 backdrop-blur-lg border border-emerald-100 shadow-lg rounded-3xl p-6 md:p-10">
+            <div className="text-center mb-12">
+              <h2 className="text-2xl md:text-3xl font-bold text-gray-800 mb-4">Pilih Spesialisasi Anda</h2>
+              <p className="text-gray-600 max-w-2xl mx-auto">
+                Temukan dokter spesialis yang sesuai dengan kebutuhan kesehatan Anda.
+                Kami menyediakan layanan konsultasi dengan dokter terbaik di setiap bidang.
+              </p>
+            </div>
+
+            <ExecutiveSpecializations />
+
+            <div className="mt-12 pt-8 border-t border-emerald-100">
+              <h3 className="text-xl font-semibold text-gray-800 mb-6 text-center">Layanan Penunjang Terintegrasi Digital</h3>
+              <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+                <div className="bg-emerald-50/50 p-4 rounded-xl border border-emerald-100">
+                  <div className="flex items-center mb-3">
+                    <FileText className="h-5 w-5 text-emerald-600 mr-2" />
+                    <span className="font-medium text-gray-800">Laboratorium</span>
                   </div>
-                  
-                  <div className="flex items-start">
-                    <Clock className="h-5 w-5 text-emerald-600 dark:text-emerald-400 mr-3 mt-0.5" />
-                    <div>
-                      <h4 className="font-medium text-foreground">Jam Operasional</h4>
-                      <p className="text-muted-foreground">24 Jam (Pelayanan Penuh)</p>
-                    </div>
+                  <p className="text-sm text-gray-600">Pemeriksaan darah, urine, dan berbagai tes laboratorium dengan hasil cepat.</p>
+                </div>
+                <div className="bg-emerald-50/50 p-4 rounded-xl border border-emerald-100">
+                  <div className="flex items-center mb-3">
+                    <HeartPulse className="h-5 w-5 text-emerald-600 mr-2" />
+                    <span className="font-medium text-gray-800">Radiologi</span>
                   </div>
-                  
-                  <div className="flex items-start">
-                    <Phone className="h-5 w-5 text-emerald-600 dark:text-emerald-400 mr-3 mt-0.5" />
-                    <div>
-                      <h4 className="font-medium text-foreground">Kontak</h4>
-                      <p className="text-muted-foreground">(0370) 112233</p>
-                      <p className="text-muted-foreground">eksekutif@rsisitihajar.ac.id</p>
-                    </div>
+                  <p className="text-sm text-gray-600">Pemeriksaan X-ray, USG, CT Scan, dan MRI dengan peralatan modern.</p>
+                </div>
+                <div className="bg-emerald-50/50 p-4 rounded-xl border border-emerald-100">
+                  <div className="flex items-center mb-3">
+                    <Stethoscope className="h-5 w-5 text-emerald-600 mr-2" />
+                    <span className="font-medium text-gray-800">Farmasi</span>
                   </div>
-                  
-                  <div className="flex items-start">
-                    <Star className="h-5 w-5 text-emerald-600 dark:text-emerald-400 mr-3 mt-0.5" />
-                    <div>
-                      <h4 className="font-medium text-foreground">Rating</h4>
-                      <div className="flex items-center">
-                        <div className="flex">
-                          {[...Array(5)].map((_, i) => (
-                            <Star key={i} className="h-4 w-4 text-yellow-500 fill-yellow-500" />
-                          ))}
-                        </div>
-                        <span className="ml-2 text-muted-foreground">4.9 (156 ulasan)</span>
-                      </div>
-                    </div>
-                  </div>
+                  <p className="text-sm text-gray-600">Obat sesuai resep dokter tersedia secara langsung di apotek internal.</p>
                 </div>
               </div>
             </div>
-            
-            <div className="mt-8">
-              <h3 className="font-semibold text-lg mb-3 text-foreground">Fasilitas Premium</h3>
-              <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
-                <Card className="bg-card border-border">
-                  <CardContent className="p-4">
-                    <div className="flex items-center">
-                      <Shield className="h-5 w-5 text-emerald-600 dark:text-emerald-400 mr-2" />
-                      <h4 className="font-medium text-foreground">Keamanan 24/7</h4>
-                    </div>
-                    <p className="text-sm text-muted-foreground mt-2">Keamanan dan privasi terjaga dengan petugas khusus</p>
-                  </CardContent>
-                </Card>
-                
-                <Card className="bg-card border-border">
-                  <CardContent className="p-4">
-                    <div className="flex items-center">
-                      <Coffee className="h-5 w-5 text-emerald-600 dark:text-emerald-400 mr-2" />
-                      <h4 className="font-medium text-foreground">Lounge Keluarga</h4>
-                    </div>
-                    <p className="text-sm text-muted-foreground mt-2">Area nyaman untuk keluarga menunggu</p>
-                  </CardContent>
-                </Card>
-                
-                <Card className="bg-card border-border">
-                  <CardContent className="p-4">
-                    <div className="flex items-center">
-                      <HeartPulse className="h-5 w-5 text-emerald-600 dark:text-emerald-400 mr-2" />
-                      <h4 className="font-medium text-foreground">Monitoring Khusus</h4>
-                    </div>
-                    <p className="text-sm text-muted-foreground mt-2">Pemantauan intensif dengan peralatan canggih</p>
-                  </CardContent>
-                </Card>
-              </div>
-            </div>
-            
-            <div className="mt-8">
-              <h3 className="font-semibold text-lg mb-3 text-foreground">Dokter Spesialis</h3>
-              <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
-                {[1, 2, 3].map((item) => (
-                  <Card key={item} className="bg-card border-border">
-                    <CardContent className="p-4">
-                      <div className="flex items-center">
-                        <div className="bg-gray-200 border-2 border-dashed rounded-xl w-16 h-16 flex items-center justify-center mr-3" />
-                        <div>
-                          <h4 className="font-medium text-foreground">dr. Muhammad Ridwan, Sp.JP</h4>
-                          <p className="text-sm text-muted-foreground">Spesialis Jantung dan Pembuluh Darah</p>
-                          <div className="flex items-center mt-1">
-                            <Star className="h-4 w-4 text-yellow-500 fill-yellow-500" />
-                            <span className="text-sm text-muted-foreground ml-1">4.9</span>
-                          </div>
-                        </div>
-                      </div>
-                      <Button asChild variant="outline" size="sm" className="w-full mt-3 border-primary/30 dark:border-emerald-500/50 text-primary dark:text-emerald-400 hover:bg-primary/5 dark:hover:bg-emerald-500/10">
-                        <Link href="/doctors/4">Lihat Profil</Link>
-                      </Button>
-                    </CardContent>
-                  </Card>
-                ))}
-              </div>
-            </div>
-            
-            <div className="mt-8 flex flex-col sm:flex-row gap-4 justify-between items-center">
-              <Button asChild className="w-full sm:w-auto">
-                <Link href="/appointment">Buat Janji Temu</Link>
-              </Button>
-              <Button asChild variant="outline" className="w-full sm:w-auto border-primary/30 dark:border-emerald-500/50 text-primary dark:text-emerald-400 hover:bg-primary/5 dark:hover:bg-emerald-500/10">
-                <Link href="/services/featured">Lihat Layanan Lainnya</Link>
-              </Button>
-            </div>
-          </CardContent>
-        </Card>
-      </div>
+          </div>
+        </div>
+      </section>
     </div>
   );
 }
+
+const CheckIcon = ({ className }: { className?: string }) => (
+  <svg className={className} fill="none" stroke="currentColor" viewBox="0 0 24 24">
+    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M5 13l4 4L19 7"></path>
+  </svg>
+);
+
+export default ExecutivePage;

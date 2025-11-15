@@ -31,6 +31,11 @@ export default function DoctorDialog({
     education?: string;
     certifications?: string[];
     consultation_fee?: number;
+    // Field tambahan untuk sistem Poli Eksekutif
+    is_executive?: boolean;
+    kd_dokter?: string;
+    sip?: string;
+    bpjs?: boolean;
   }) => {
     setLoading(true);
     try {
@@ -46,6 +51,11 @@ export default function DoctorDialog({
           education: data.education,
           certifications: data.certifications,
           consultation_fee: data.consultation_fee,
+          // Field tambahan untuk sistem Poli Eksekutif
+          is_executive: data.is_executive,
+          kd_dokter: data.kd_dokter,
+          sip: data.sip,
+          bpjs: data.bpjs,
         });
       } else {
         // Create new doctor
@@ -59,6 +69,11 @@ export default function DoctorDialog({
           education: data.education,
           certifications: data.certifications,
           consultation_fee: data.consultation_fee,
+          // Field tambahan untuk sistem Poli Eksekutif
+          is_executive: data.is_executive,
+          kd_dokter: data.kd_dokter,
+          sip: data.sip,
+          bpjs: data.bpjs,
         });
       }
       onSubmit();

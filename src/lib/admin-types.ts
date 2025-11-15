@@ -28,6 +28,11 @@ export interface Doctor {
   slug: string | null;
   created_at: string;
   updated_at: string;
+  // Kolom tambahan untuk sistem Poli Eksekutif
+  is_executive?: boolean;
+  kd_dokter?: string;  // Kode dokter dari SIMRS Khanza
+  sip?: string;        // Surat Izin Praktik
+  bpjs?: boolean;
 }
 
 export interface Schedule {

@@ -38,6 +38,11 @@ const doctorFormSchema = z.object({
   certifications: z.string().optional(), // Input form sebagai string, diproses menjadi array
   consultation_fee: z.number().min(0, "Biaya konsultasi minimal 0").optional(),
   slug: z.string().optional(),
+  // Field tambahan untuk sistem Poli Eksekutif
+  is_executive: z.boolean().optional(),
+  kd_dokter: z.string().optional(),
+  sip: z.string().optional(),
+  bpjs: z.boolean().optional(),
 });
 
 type DoctorFormValues = z.infer<typeof doctorFormSchema>;
@@ -54,6 +59,11 @@ interface ProcessedDoctorData {
   certifications?: string[]; // Sudah diproses menjadi array
   consultation_fee?: number;
   slug?: string;
+  // Field tambahan untuk sistem Poli Eksekutif
+  is_executive?: boolean;
+  kd_dokter?: string;
+  sip?: string;
+  bpjs?: boolean;
 }
 
 interface DoctorFormProps {
@@ -80,6 +90,11 @@ export default function DoctorForm({ doctor, onSubmit, onCancel, loading = false
       certifications: doctor?.certifications ? doctor.certifications.join(', ') : '',
       consultation_fee: doctor?.consultation_fee || 0,
       slug: doctor?.slug || '',
+      // Default values untuk field tambahan
+      is_executive: doctor?.is_executive || false,
+      kd_dokter: doctor?.kd_dokter || '',
+      sip: doctor?.sip || '',
+      bpjs: doctor?.bpjs || false,
     },
   });
 
@@ -120,6 +135,11 @@ export default function DoctorForm({ doctor, onSubmit, onCancel, loading = false
         certifications: certificationsArray.length > 0 ? certificationsArray : undefined,
         consultation_fee: data.consultation_fee,
         slug: data.slug,
+        // Field tambahan untuk sistem Poli Eksekutif
+        is_executive: data.is_executive,
+        kd_dokter: data.kd_dokter,
+        sip: data.sip,
+        bpjs: data.bpjs,
       };
 
       await onSubmit(formData);
@@ -280,6 +300,81 @@ export default function DoctorForm({ doctor, onSubmit, onCancel, loading = false
             </FormItem>
           )}
         />
+        {/* Section untuk field-field tambahan sistem Poli Eksekutif */}
+        <div className="border-t border-gray-200 pt-6 mt-6">
+          <h3 className="text-lg font-medium mb-4">Pengaturan Poli Eksekutif</h3>
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+            <FormField
+              control={form.control}
+              name="is_executive"
+              render={({ field }) => (
+                <FormItem className="flex flex-row items-start space-x-3 space-y-0 rounded-md border p-4">
+                  <FormControl>
+                    <input
+                      type="checkbox"
+                      className="mt-1 h-4 w-4 rounded border-gray-300 text-emerald-600 focus:ring-emerald-500"
+                      checked={field.value}
+                      onChange={field.onChange}
+                    />
+                  </FormControl>
+                  <div className="space-y-1 leading-none">
+                    <FormLabel>
+                      Dokter Eksekutif
+                    </FormLabel>
+                  </div>
+                </FormItem>
+              )}
+            />
+            <FormField
+              control={form.control}
+              name="bpjs"
+              render={({ field }) => (
+                <FormItem className="flex flex-row items-start space-x-3 space-y-0 rounded-md border p-4">
+                  <FormControl>
+                    <input
+                      type="checkbox"
+                      className="mt-1 h-4 w-4 rounded border-gray-300 text-emerald-600 focus:ring-emerald-500"
+                      checked={field.value}
+                      onChange={field.onChange}
+                    />
+                  </FormControl>
+                  <div className="space-y-1 leading-none">
+                    <FormLabel>
+                      Melayani BPJS
+                    </FormLabel>
+                  </div>
+                </FormItem>
+              )}
+            />
+            <FormField
+              control={form.control}
+              name="kd_dokter"
+              render={({ field }) => (
+                <FormItem>
+                  <FormLabel>Kode Dokter (SIMRS)</FormLabel>
+                  <FormControl>
+                    <Input placeholder="Kode dokter dari SIMRS Khanza" {...field} />
+                  </FormControl>
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
+            <FormField
+              control={form.control}
+              name="sip"
+              render={({ field }) => (
+                <FormItem>
+                  <FormLabel>SIP (Surat Izin Praktik)</FormLabel>
+                  <FormControl>
+                    <Input placeholder="Nomor Surat Izin Praktik" {...field} />
+                  </FormControl>
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
+          </div>
+        </div>
+
         <div className="flex justify-end space-x-2 pt-4">
           <Button
             type="button"

@@ -2,7 +2,7 @@ import { db } from '@/lib/db';
 import { getPatientByUserId } from '@/lib/patient-service';
 import { getDoctorById } from '@/lib/doctor-service';
 import { createAppointment } from '@/lib/appointment-service';
-import { registerToKhanza } from '@/lib/khanza/khanza-integration-final';
+import { registerToKhanza } from '@/lib/khanza/khanza-registration';
 
 // Interface untuk detail pasien
 export interface PatientDetails {
@@ -60,7 +60,7 @@ export async function createBooking(bookingData: BookingData, userId: string): P
     // Jika pasien tidak ditemukan, buat pasien baru menggunakan data dari formulir
     if (!patient && bookingData.patientDetails) {
       const { createPatient } = await import('./patient-service');
-      
+
       patient = await createPatient({
         user_id: userId,
         name: bookingData.patientDetails.name,
@@ -70,14 +70,14 @@ export async function createBooking(bookingData: BookingData, userId: string): P
         address: bookingData.patientDetails.address,
         phone: bookingData.patientDetails.phone,
         email: bookingData.patientDetails.email,
-        patientType: bookingData.patientDetails.insuranceType,
-        medicalRecordNumber: null,
-        occupation: bookingData.patientDetails.occupation,
-        marital_status: bookingData.patientDetails.maritalStatus,
-        blood_type: bookingData.patientDetails.bloodType,
-        allergies: bookingData.patientDetails.allergies,
-        emergency_contact_name: bookingData.patientDetails.emergencyContactName,
-        emergency_contact_phone: bookingData.patientDetails.emergencyContactPhone,
+        patientType: bookingData.patientDetails.insuranceType === 'bpjs' ? 'lama' : 'baru', // Konversi tipe pasien yang benar
+        medicalRecordNumber: undefined, // Gunakan undefined daripada null
+        occupation: bookingData.patientDetails.occupation || '',
+        marital_status: bookingData.patientDetails.maritalStatus || '',
+        blood_type: bookingData.patientDetails.bloodType || '',
+        allergies: bookingData.patientDetails.allergies || '',
+        emergency_contact_name: bookingData.patientDetails.emergencyContactName || '',
+        emergency_contact_phone: bookingData.patientDetails.emergencyContactPhone || '',
       });
     }
     
@@ -119,20 +119,28 @@ export async function createBooking(bookingData: BookingData, userId: string): P
       // Gunakan fungsi integrasi Khanza yang telah kita buat
       const khanzaResult = await registerToKhanza(
         {
-          // Kirim data pasien
-          nik: patient.nik || bookingData.patientDetails?.nik || '',
+          // Kirim data pasien dalam format yang sesuai dengan khanza-registration.ts
+          user_id: userId, // Tambahkan user_id yang dibutuhkan oleh interface
           name: patient.name || bookingData.patientDetails?.name || '',
-          gender: patient.gender || bookingData.patientDetails?.gender || '',
+          nik: patient.nik || bookingData.patientDetails?.nik || '',
           birthDate: patient.birth_date || bookingData.patientDetails?.birthDate || '',
+          gender: patient.gender || bookingData.patientDetails?.gender || '',
           address: patient.address || bookingData.patientDetails?.address || '',
           phone: patient.phone || bookingData.patientDetails?.phone || '',
-          patientType: patient.patient_type || bookingData.patientDetails?.insuranceType || 'umum'
+          email: patient.email || bookingData.patientDetails?.email || '',
+          patientType: patient.patient_type === 'lama' ? 'lama' : (bookingData.patientDetails?.insuranceType === 'bpjs' ? 'lama' : 'baru'),
+          medicalRecordNumber: patient.medical_record_number || undefined,
+          occupation: patient.occupation || bookingData.patientDetails?.occupation || '',
+          marital_status: patient.marital_status || bookingData.patientDetails?.maritalStatus || '',
+          blood_type: patient.blood_type || bookingData.patientDetails?.bloodType || '',
+          allergies: patient.allergies || bookingData.patientDetails?.allergies || '',
+          emergency_contact_name: patient.emergency_contact_name || bookingData.patientDetails?.emergencyContactName || '',
+          emergency_contact_phone: patient.emergency_contact_phone || bookingData.patientDetails?.emergencyContactPhone || '',
         },
         {
-          // Kirim data janji temu
-          appointmentId: appointment.id,
-          polyclinic: doctor.specialty,
-          doctor: doctor.name
+          // Kirim data appointment dalam format yang sesuai dengan interface AppointmentFormData
+          doctor: doctor.name || bookingData.doctorId,
+          polyclinic: doctor.specialty || 'Umum',
         }
       );
       
@@ -199,7 +207,7 @@ export async function checkDoctorAvailability(
 
     if (time) {
       // Jika waktu spesifik diminta, periksa ketersediaan slot
-      const timeSlot = schedules.rows.find(slot => {
+      const timeSlot = schedules.rows.find((slot: any) => {
         const requestedTime = new Date(`1970-01-01T${time}`);
         const startTime = new Date(`1970-01-01T${slot.start_time}`);
         const endTime = new Date(`1970-01-01T${slot.end_time}`);
@@ -217,21 +225,21 @@ export async function checkDoctorAvailability(
       // Kembalikan semua slot waktu yang tersedia
       const availableTimes: string[] = [];
       
-      schedules.rows.forEach(slot => {
-        const startHour = parseInt(slot.start_time.split(':')[0]);
-        const endHour = parseInt(slot.end_time.split(':')[0]);
-        
+      schedules.rows.forEach((slot: any) => {
+        const startHour = parseInt((slot.start_time as string).split(':')[0]);
+        const endHour = parseInt((slot.end_time as string).split(':')[0]);
+
         // Tambahkan slot-slot waktu yang tersedia antara jam buka
         for (let hour = startHour; hour < endHour; hour++) {
           const timeString = `${hour.toString().padStart(2, '0')}:00-${(hour + 1).toString().padStart(2, '0')}:00`;
           // Hitung jumlah pendaftar dalam rentang waktu ini
           const currentTimeBooked = schedules.rows
-            .filter(s => {
-              const slotStart = parseInt(s.start_time.split(':')[0]);
-              const slotEnd = parseInt(s.end_time.split(':')[0]);
+            .filter((s: any) => {
+              const slotStart = parseInt((s.start_time as string).split(':')[0]);
+              const slotEnd = parseInt((s.end_time as string).split(':')[0]);
               return hour >= slotStart && hour < slotEnd;
             })
-            .reduce((total, s) => total + s.booked_count, 0);
+            .reduce((total: number, s: any) => total + (s.booked_count as number), 0);
           
           if (currentTimeBooked < slot.max_patients) {
             availableTimes.push(timeString);
@@ -240,23 +248,23 @@ export async function checkDoctorAvailability(
           // Tambahkan juga slot 30 menit jika tersedia
           const timeString30 = `${hour.toString().padStart(2, '0')}:30-${(hour + 1).toString().padStart(2, '0')}:00`;
           const currentTimeBooked30 = schedules.rows
-            .filter(s => {
-              const slotStart = parseInt(s.start_time.split(':')[0]);
-              const slotEnd = parseInt(s.end_time.split(':')[0]);
-              return (hour === slotStart && 30 >= parseInt(s.start_time.split(':')[1])) || 
+            .filter((s: any) => {
+              const slotStart = parseInt((s.start_time as string).split(':')[0]);
+              const slotEnd = parseInt((s.end_time as string).split(':')[0]);
+              return (hour === slotStart && 30 >= parseInt((s.start_time as string).split(':')[1])) ||
                      (hour < slotEnd);
             })
-            .reduce((total, s) => total + s.booked_count, 0);
-          
-          if (currentTimeBooked30 < slot.max_patients) {
+            .reduce((total: number, s: any) => total + (s.booked_count as number), 0);
+
+          if (currentTimeBooked30 < (slot.max_patients as number)) {
             availableTimes.push(timeString30);
           }
         }
-        
+
         // Tambahkan juga slot menit-menit lain jika tersedia
         for (let minute = 15; minute < 60; minute += 15) {
           const timeString = `${startHour.toString().padStart(2, '0')}:${minute.toString().padStart(2, '0')}-${startHour.toString().padStart(2, '0')}:${(minute + 15).toString().padStart(2, '0')}`;
-          if (slot.booked_count < slot.max_patients) {
+          if ((slot.booked_count as number) < (slot.max_patients as number)) {
             availableTimes.push(timeString);
           }
         }

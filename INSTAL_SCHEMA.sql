@@ -281,3 +281,37 @@ CREATE TABLE public.users (
   updated_at timestamp with time zone DEFAULT now(),
   CONSTRAINT users_pkey PRIMARY KEY (id)
 );
+
+-- Menambahkan kolom ke tabel doctors untuk menandai apakah dokter tersedia untuk poli eksekutif
+ALTER TABLE public.doctors ADD COLUMN IF NOT EXISTS is_executive BOOLEAN DEFAULT FALSE;
+ALTER TABLE public.doctors ADD COLUMN IF NOT EXISTS kd_dokter TEXT UNIQUE;
+ALTER TABLE public.doctors ADD COLUMN IF NOT EXISTS sip TEXT;
+ALTER TABLE public.doctors ADD COLUMN IF NOT EXISTS bpjs BOOLEAN DEFAULT FALSE;
+ALTER TABLE public.doctors ADD COLUMN IF NOT EXISTS specialization TEXT;
+ALTER TABLE public.doctors ADD COLUMN IF NOT EXISTS education TEXT;
+
+-- Menambahkan kolom ke tabel schedules untuk menandai apakah jadwal untuk poli eksekutif
+ALTER TABLE public.schedules ADD COLUMN IF NOT EXISTS is_executive BOOLEAN DEFAULT FALSE;
+ALTER TABLE public.schedules ADD COLUMN IF NOT EXISTS day_of_week TEXT;
+ALTER TABLE public.schedules ADD COLUMN IF NOT EXISTS quota INTEGER DEFAULT 5;
+
+-- Menambahkan kolom ke tabel patient_profiles untuk informasi tambahan
+ALTER TABLE public.patient_profiles ADD COLUMN IF NOT EXISTS no_rkm_medis TEXT UNIQUE;
+ALTER TABLE public.patient_profiles ADD COLUMN IF NOT EXISTS no_ktp TEXT;
+
+-- Menambahkan kolom ke tabel appointments untuk menandai apakah ini untuk poli eksekutif
+ALTER TABLE public.appointments ADD COLUMN IF NOT EXISTS is_executive BOOLEAN DEFAULT FALSE;
+ALTER TABLE public.appointments ADD COLUMN IF NOT EXISTS no_reg TEXT UNIQUE;
+ALTER TABLE public.appointments ADD COLUMN IF NOT EXISTS kd_dokter TEXT;
+ALTER TABLE public.appointments ADD COLUMN IF NOT EXISTS jam_reg TIME;
+ALTER TABLE public.appointments ADD COLUMN IF NOT EXISTS tgl_registrasi DATE DEFAULT CURRENT_DATE;
+ALTER TABLE public.appointments ADD COLUMN IF NOT EXISTS stts TEXT DEFAULT 'Belum'; -- Status: Belum, Dilayani, Selesai, Batal
+
+-- Index untuk performa
+CREATE INDEX IF NOT EXISTS idx_doctors_is_executive ON public.doctors(is_executive);
+CREATE INDEX IF NOT EXISTS idx_schedules_is_executive ON public.schedules(is_executive);
+CREATE INDEX IF NOT EXISTS idx_appointments_is_executive ON public.appointments(is_executive);
+CREATE INDEX IF NOT EXISTS idx_appointments_no_rkm_medis ON public.appointments(no_rkm_medis);
+CREATE INDEX IF NOT EXISTS idx_appointments_kd_dokter ON public.appointments(kd_dokter);
+CREATE INDEX IF NOT EXISTS idx_appointments_tgl_registrasi ON public.appointments(tgl_registrasi);
+CREATE INDEX IF NOT EXISTS idx_appointments_stts ON public.appointments(stts);

@@ -52,9 +52,12 @@ export default function DoctorsPage() {
   }, [refreshTrigger]);
 
   // Filter dokter berdasarkan pencarian
-  const filteredDoctors = doctors.filter(doctor => 
+  const filteredDoctors = doctors.filter(doctor =>
     doctor.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
-    doctor.specialty.toLowerCase().includes(searchTerm.toLowerCase())
+    doctor.specialty.toLowerCase().includes(searchTerm.toLowerCase()) ||
+    (doctor.kd_dokter && doctor.kd_dokter.toLowerCase().includes(searchTerm.toLowerCase())) ||
+    (doctor.sip && doctor.sip.toLowerCase().includes(searchTerm.toLowerCase())) ||
+    doctor.education?.toLowerCase().includes(searchTerm.toLowerCase())
   );
 
   const handleUpdateSlugs = async () => {
@@ -162,6 +165,10 @@ export default function DoctorsPage() {
                     <TableHead>Spesialisasi</TableHead>
                     <TableHead>Pendidikan</TableHead>
                     <TableHead>Biaya Konsultasi</TableHead>
+                    <TableHead>Eksekutif</TableHead>
+                    <TableHead>Kode Dokter</TableHead>
+                    <TableHead>SIP</TableHead>
+                    <TableHead>BPJS</TableHead>
                     <TableHead className="text-right">Aksi</TableHead>
                   </TableRow>
                 </TableHeader>
@@ -187,6 +194,30 @@ export default function DoctorsPage() {
                         <TableCell>{doctor.specialty}</TableCell>
                         <TableCell>{doctor.education}</TableCell>
                         <TableCell>Rp {doctor.consultation_fee?.toLocaleString() || '0'}</TableCell>
+                        <TableCell>
+                          {doctor.is_executive ? (
+                            <span className="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-emerald-100 text-emerald-800">
+                              Ya
+                            </span>
+                          ) : (
+                            <span className="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-gray-100 text-gray-800">
+                              Tidak
+                            </span>
+                          )}
+                        </TableCell>
+                        <TableCell>{doctor.kd_dokter || '-'}</TableCell>
+                        <TableCell>{doctor.sip || '-'}</TableCell>
+                        <TableCell>
+                          {doctor.bpjs ? (
+                            <span className="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-blue-100 text-blue-800">
+                              Ya
+                            </span>
+                          ) : (
+                            <span className="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-gray-100 text-gray-800">
+                              Tidak
+                            </span>
+                          )}
+                        </TableCell>
                         <TableCell className="text-right">
                           <div className="flex justify-end space-x-2">
                             <Button
