@@ -182,3 +182,42 @@ export async function updateAppointmentStatus(appointmentId: string, status: App
 export async function cancelAppointment(appointmentId: string): Promise<Appointment> {
   return await updateAppointmentStatus(appointmentId, 'cancelled');
 }
+
+// Fungsi untuk mendapatkan semua janji temu (untuk admin)
+export async function getAllAppointments(): Promise<Appointment[]> {
+  const supabase = await getSupabaseClient();
+
+  const { data, error } = await supabase
+    .from('appointments')
+    .select(`
+      *,
+      users (full_name, email),
+      doctors (name, specialty)
+    `)
+    .order('appointment_date', { ascending: false })
+    .order('appointment_time', { ascending: false });
+
+  if (error) {
+    console.error('Error fetching all appointments:', error);
+    throw new Error(`Gagal mengambil semua janji temu: ${error.message}`);
+  }
+
+  return data as Appointment[];
+}
+
+// Fungsi untuk menghapus janji temu
+export async function deleteAppointment(appointmentId: string): Promise<boolean> {
+  const supabase = await getSupabaseClient();
+
+  const { error } = await supabase
+    .from('appointments')
+    .delete()
+    .eq('id', appointmentId);
+
+  if (error) {
+    console.error('Error deleting appointment:', error);
+    throw new Error(`Gagal menghapus janji temu: ${error.message}`);
+  }
+
+  return true;
+}

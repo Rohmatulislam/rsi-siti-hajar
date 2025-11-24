@@ -83,6 +83,18 @@ export function AboutUs() {
             </MotionCard>
           ))}
         </div>
+
+        {/* Tombol Lihat Selengkapnya */}
+        <div className="text-center mt-12">
+          <Link href="/about">
+            <Button className="bg-gradient-to-r from-emerald-600 to-teal-600 hover:from-emerald-700 hover:to-teal-700 text-white font-bold py-3 px-8 rounded-full transition-all duration-300 transform hover:scale-105 shadow-lg hover:shadow-xl">
+              Lihat Selengkapnya
+              <svg xmlns="http://www.w3.org/2000/svg" className="ml-2 h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M14 5l7 7m0 0l-7 7m7-7H3" />
+              </svg>
+            </Button>
+          </Link>
+        </div>
       </div>
     </MotionSection>
   );

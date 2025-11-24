@@ -42,6 +42,7 @@ const AdminSidebar = () => {
     { name: "Manajemen Layanan", href: "/admin/services", icon: HeartPulse, hasSubmenu: true },
     { name: "Manajemen FAQ", href: "/admin/faqs", icon: MessageCircle },
     { name: "Manajemen Lowongan", href: "/admin/job-listings", icon: Briefcase },
+    { name: "Kelola Tentang Kami", href: "/admin/about", icon: BookOpen },
     { name: "Pengaturan", href: "/admin/settings", icon: Settings },
   ];
 

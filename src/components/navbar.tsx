@@ -228,6 +228,12 @@ export function Navbar() {
                       Peta Lokasi
                     </Link>
                   </DropdownMenuItem>
+                  <DropdownMenuItem asChild className="py-3 text-gray-700 dark:text-gray-200 dark:focus:bg-gray-700 focus:bg-emerald-50">
+                    <Link href="/about" className="flex items-center">
+                      <div className="w-2 h-2 rounded-full bg-blue-500 mr-3"></div>
+                      Tentang Kami
+                    </Link>
+                  </DropdownMenuItem>
                 </DropdownMenuContent>
               </DropdownMenu>
             </div>
@@ -345,6 +351,7 @@ export function Navbar() {
                     <Link href="/jobs" className="block py-2 text-gray-600 hover:text-emerald-600 dark:hover:text-emerald-400" onClick={() => setMobileMenuOpen(false)}>Lowongan Kerja</Link>
                     <Link href="/faq" className="block py-2 text-gray-600 hover:text-emerald-600 dark:hover:text-emerald-400" onClick={() => setMobileMenuOpen(false)}>FAQ</Link>
                     <Link href="/information/map" className="block py-2 text-gray-600 hover:text-emerald-600 dark:hover:text-emerald-400" onClick={() => setMobileMenuOpen(false)}>Peta Lokasi</Link>
+                    <Link href="/about" className="block py-2 text-gray-600 hover:text-emerald-600 dark:hover:text-emerald-400" onClick={() => setMobileMenuOpen(false)}>Tentang Kami</Link>
                   </div>
                 </div>
               </>

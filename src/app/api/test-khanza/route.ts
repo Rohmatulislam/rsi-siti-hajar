@@ -1,5 +1,5 @@
 import { NextRequest } from 'next/server';
-import { testKhanzaConnection } from '@/lib/khanza-db-integration';
+import { testKhanzaConnection } from '@/lib/khanza/khanza-service';
 
 export async function GET(request: NextRequest) {
   try {

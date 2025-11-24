@@ -4,23 +4,56 @@ import { useState, useEffect } from 'react';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
-import { 
-  Table, 
-  TableBody, 
-  TableCell, 
-  TableHead, 
-  TableHeader, 
-  TableRow 
+import {
+  Table,
+  TableBody,
+  TableCell,
+  TableHead,
+  TableHeader,
+  TableRow
 } from '@/components/ui/table';
-import { 
+import {
   Search,
   Pencil,
   Trash2,
   Eye,
   CalendarPlus
 } from 'lucide-react';
-import { getAllAppointments, deleteAppointment, updateAppointmentStatus } from '@/lib/appointment-service';
 import { Appointment } from '@/lib/admin-types';
+
+// Fungsi untuk mendapatkan semua janji temu
+async function getAllAppointments(): Promise<Appointment[]> {
+  const response = await fetch('/api/admin/appointments');
+  if (!response.ok) {
+    throw new Error('Failed to fetch appointments');
+  }
+  return response.json();
+}
+
+// Fungsi untuk menghapus janji temu
+async function deleteAppointment(id: string): Promise<void> {
+  const response = await fetch(`/api/admin/appointments/${id}`, {
+    method: 'DELETE',
+  });
+  if (!response.ok) {
+    throw new Error('Failed to delete appointment');
+  }
+}
+
+// Fungsi untuk memperbarui status janji temu
+async function updateAppointmentStatus(id: string, status: string): Promise<Appointment> {
+  const response = await fetch('/api/admin/appointments/status', {
+    method: 'PUT',
+    headers: {
+      'Content-Type': 'application/json',
+    },
+    body: JSON.stringify({ id, status }),
+  });
+  if (!response.ok) {
+    throw new Error('Failed to update appointment status');
+  }
+  return response.json();
+}
 
 export default function AppointmentsPage() {
   const [appointments, setAppointments] = useState<Appointment[]>([]);

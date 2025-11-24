@@ -313,13 +313,3 @@ export async function getExecutivePatientsForSync() {
   return [];
 }
 
-// Export semua fungsi
-export {
-  getExecutiveDoctors,
-  getExecutivePatient,
-  registerExecutivePatient,
-  saveExecutiveRegistrationToSupabase,
-  getExecutiveDoctorsForSync,
-  getExecutiveRegistrationsForSync,
-  getExecutivePatientsForSync
-};

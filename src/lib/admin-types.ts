@@ -137,3 +137,50 @@ export interface JobListing {
 export interface DoctorWithSchedules extends Doctor {
   schedules?: Schedule[];
 }
+
+// Tipe data untuk halaman tentang kami
+export interface Founder {
+  id: string;
+  name: string;
+  role: string;
+  photo_url: string | null;
+  description: string;
+}
+
+export interface Achievement {
+  number: string;
+  label: string;
+}
+
+export interface TeamMember {
+  name: string;
+  role: string;
+  experience: string;
+}
+
+export interface AboutSection {
+  id: string;
+  title: string;
+  content: string;
+  order: number;
+  created_at: string;
+  updated_at: string;
+}
+
+export interface AboutContent {
+  id: string;
+  title: string;
+  hero_title: string;
+  hero_description: string;
+  hero_image?: string | null;
+  history: string;
+  vision: string;
+  mission: string;
+  values: string;
+  commitment: string;
+  achievements: Achievement[];
+  team: TeamMember[];
+  founders: Founder[];
+  created_at: string;
+  updated_at: string;
+}
