@@ -6,11 +6,8 @@ import { Schedule } from '@/lib/admin-types';
 
 // Fungsi bantu untuk mengonversi berbagai format waktu ke format 24 jam
 function convertTo24HourFormat(timeInput: string): string | null {
-  console.log('Processing timeInput:', timeInput, 'Type:', typeof timeInput);
-
   // Pastikan input adalah string
   if (typeof timeInput !== 'string') {
-    console.log('Input is not a string');
     return null;
   }
 
@@ -18,10 +15,8 @@ function convertTo24HourFormat(timeInput: string): string | null {
   if (/^\d{2}:\d{2}$/.test(timeInput)) {
     const [hour, minute] = timeInput.split(':').map(Number);
     if (hour >= 0 && hour <= 23 && minute >= 0 && minute <= 59) {
-      console.log('Matched HH:MM format:', timeInput);
       return timeInput;
     }
-    console.log('HH:MM format but invalid time values');
     return null;
   }
 
@@ -30,10 +25,8 @@ function convertTo24HourFormat(timeInput: string): string | null {
     const [hour, minute, second] = timeInput.split(':').map(Number);
     if (hour >= 0 && hour <= 23 && minute >= 0 && minute <= 59 && second >= 0 && second <= 59) {
       const result = `${hour.toString().padStart(2, '0')}:${minute.toString().padStart(2, '0')}`;
-      console.log('Matched HH:MM:SS format, converted to:', result);
       return result;
     }
-    console.log('HH:MM:SS format but invalid time values');
     return null;
   }
 
@@ -54,7 +47,6 @@ function convertTo24HourFormat(timeInput: string): string | null {
       }
 
       const result = `${hourNum.toString().padStart(2, '0')}:${minuteNum.toString().padStart(2, '0')}`;
-      console.log('Matched AM/PM format, converted to:', result);
       return result;
     }
   }
@@ -64,20 +56,16 @@ function convertTo24HourFormat(timeInput: string): string | null {
     try {
       const date = new Date(timeInput);
       if (isNaN(date.getTime())) {
-        console.log('Invalid date from ISO string');
         return null;
       }
       const result = `${date.getHours().toString().padStart(2, '0')}:${date.getMinutes().toString().padStart(2, '0')}`;
-      console.log('Matched ISO format, converted to:', result);
       return result;
     } catch (e) {
-      console.log('Error parsing ISO date:', e);
       return null;
     }
   }
 
   // Jika tidak cocok dengan format apa pun
-  console.log('No matching format found');
   return null;
 }
 
@@ -220,9 +208,7 @@ export async function createSchedule(scheduleData: {
   let validatedEndTime = null;
 
   if (scheduleData.start_time) {
-    console.log('Input start_time:', scheduleData.start_time, 'Type:', typeof scheduleData.start_time);
     validatedStartTime = convertTo24HourFormat(scheduleData.start_time);
-    console.log('Converted start_time:', validatedStartTime);
     if (!validatedStartTime) {
       throw new Error('Start time format must be HH:MM (e.g., 09:00, 14:30)');
     }
@@ -230,9 +216,7 @@ export async function createSchedule(scheduleData: {
   }
 
   if (scheduleData.end_time) {
-    console.log('Input end_time:', scheduleData.end_time, 'Type:', typeof scheduleData.end_time);
     validatedEndTime = convertTo24HourFormat(scheduleData.end_time);
-    console.log('Converted end_time:', validatedEndTime);
     if (!validatedEndTime) {
       throw new Error('End time format must be HH:MM (e.g., 09:00, 14:30)');
     }
@@ -315,9 +299,7 @@ export async function updateSchedule(scheduleId: string, scheduleData: {
 
     // Validasi format waktu
     if (scheduleData.start_time) {
-      console.log('Input start_time:', scheduleData.start_time, 'Type:', typeof scheduleData.start_time);
       validatedStartTime = convertTo24HourFormat(scheduleData.start_time);
-      console.log('Converted start_time:', validatedStartTime);
       if (!validatedStartTime) {
         throw new Error('Start time format must be HH:MM (e.g., 09:00, 14:30)');
       }
@@ -325,9 +307,7 @@ export async function updateSchedule(scheduleId: string, scheduleData: {
     }
 
     if (scheduleData.end_time) {
-      console.log('Input end_time:', scheduleData.end_time, 'Type:', typeof scheduleData.end_time);
       validatedEndTime = convertTo24HourFormat(scheduleData.end_time);
-      console.log('Converted end_time:', validatedEndTime);
       if (!validatedEndTime) {
         throw new Error('End time format must be HH:MM (e.g., 09:00, 14:30)');
       }
