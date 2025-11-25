@@ -125,78 +125,60 @@ export function HeroSection() {
             {/* Cari Dokter */}
             <Link href="/doctors" className="group relative block">
               <div className="bg-white/10 rounded-2xl p-5 text-center border border-white/20 hover:border-emerald-400/50 hover:bg-white/30 hover:backdrop-blur-lg transition-all duration-300 hover:scale-105 shadow-lg hover:shadow-2xl group-hover:shadow-emerald-500/30 h-full">
-                <div className="w-14 h-14 bg-gradient-to-br from-emerald-500 to-teal-600 rounded-2xl flex items-center justify-center mx-auto mb-3 group-hover:scale-110 transition-transform duration-300">
+                <div className="w-14 h-14 bg-gradient-to-br from-emerald-500 to-teal-600 rounded-2xl flex items-center justify-center mx-auto mb-4 group-hover:scale-110 transition-transform duration-300">
                   <Stethoscope className="h-6 w-6 text-white" />
                 </div>
-                <h3 className="font-semibold text-black text-base mb-1">Cari Dokter</h3>
-                <p className="text-sm text-emerald-200 opacity-0 group-hover:opacity-100 transition-opacity duration-300">
-                  Dokter Spesialis
-                </p>
+                <h3 className="font-semibold text-black text-base">Cari Dokter</h3>
               </div>
             </Link>
 
             {/* Layanan Unggulan */}
             <Link href="/services/featured" className="group relative block">
               <div className="bg-white/10 rounded-2xl p-5 text-center border border-white/20 hover:border-amber-400/50 hover:bg-white/30 hover:backdrop-blur-lg transition-all duration-300 hover:scale-105 shadow-lg hover:shadow-2xl group-hover:shadow-amber-500/30 h-full">
-                <div className="w-14 h-14 bg-gradient-to-br from-amber-500 to-orange-600 rounded-2xl flex items-center justify-center mx-auto mb-3 group-hover:scale-110 transition-transform duration-300">
+                <div className="w-14 h-14 bg-gradient-to-br from-amber-500 to-orange-600 rounded-2xl flex items-center justify-center mx-auto mb-4 group-hover:scale-110 transition-transform duration-300">
                   <Star className="h-6 w-6 text-white" />
                 </div>
-                <h3 className="font-semibold text-black text-base mb-1">Layanan Unggulan</h3>
-                <p className="text-sm text-amber-200 opacity-0 group-hover:opacity-100 transition-opacity duration-300">
-                  Fasilitas Terbaik
-                </p>
+                <h3 className="font-semibold text-black text-base">Layanan Unggulan</h3>
               </div>
             </Link>
 
             {/* Poli Executive */}
             <Link href="/services/featured/executive" className="group relative block">
               <div className="bg-white/10 rounded-2xl p-5 text-center border border-white/20 hover:border-amber-400/50 hover:bg-white/30 hover:backdrop-blur-lg transition-all duration-300 hover:scale-105 shadow-lg hover:shadow-2xl group-hover:shadow-amber-500/30 h-full">
-                <div className="w-14 h-14 bg-gradient-to-br from-amber-500 to-orange-600 rounded-2xl flex items-center justify-center mx-auto mb-3 group-hover:scale-110 transition-transform duration-300">
+                <div className="w-14 h-14 bg-gradient-to-br from-amber-500 to-orange-600 rounded-2xl flex items-center justify-center mx-auto mb-4 group-hover:scale-110 transition-transform duration-300">
                   <Crown className="h-6 w-6 text-white" />
                 </div>
-                <h3 className="font-semibold text-black text-base mb-1">Poli Executive</h3>
-                <p className="text-sm text-amber-200 opacity-0 group-hover:opacity-100 transition-opacity duration-300">
-                  Pelayanan Premium
-                </p>
+                <h3 className="font-semibold text-black text-base">Poli Executive</h3>
               </div>
             </Link>
 
             {/* Medical Check Up */}
             <Link href="/services/mcu" className="group relative block">
               <div className="bg-white/10 rounded-2xl p-5 text-center border border-white/20 hover:border-blue-400/50 hover:bg-white/30 hover:backdrop-blur-lg transition-all duration-300 hover:scale-105 shadow-lg hover:shadow-2xl group-hover:shadow-blue-500/30 h-full">
-                <div className="w-14 h-14 bg-gradient-to-br from-blue-500 to-indigo-600 rounded-2xl flex items-center justify-center mx-auto mb-3 group-hover:scale-110 transition-transform duration-300">
+                <div className="w-14 h-14 bg-gradient-to-br from-blue-500 to-indigo-600 rounded-2xl flex items-center justify-center mx-auto mb-4 group-hover:scale-110 transition-transform duration-300">
                   <Activity className="h-6 w-6 text-white" />
                 </div>
-                <h3 className="font-semibold text-black text-base mb-1">Medical Check Up</h3>
-                <p className="text-sm text-blue-200 opacity-0 group-hover:opacity-100 transition-opacity duration-300">
-                  Pemeriksaan Lengkap
-                </p>
+                <h3 className="font-semibold text-black text-base">Medical Check Up</h3>
               </div>
             </Link>
 
             {/* Lab */}
             <Link href="/services/laboratory" className="group relative block">
               <div className="bg-white/10 rounded-2xl p-5 text-center border border-white/20 hover:border-purple-400/50 hover:bg-white/30 hover:backdrop-blur-lg transition-all duration-300 hover:scale-105 shadow-lg hover:shadow-2xl group-hover:shadow-purple-500/30 h-full">
-                <div className="w-14 h-14 bg-gradient-to-br from-purple-500 to-pink-600 rounded-2xl flex items-center justify-center mx-auto mb-3 group-hover:scale-110 transition-transform duration-300">
+                <div className="w-14 h-14 bg-gradient-to-br from-purple-500 to-pink-600 rounded-2xl flex items-center justify-center mx-auto mb-4 group-hover:scale-110 transition-transform duration-300">
                   <Microscope className="h-6 w-6 text-white" />
                 </div>
-                <h3 className="font-semibold text-black text-base mb-1">Laboratorium</h3>
-                <p className="text-sm text-purple-200 opacity-0 group-hover:opacity-100 transition-opacity duration-300">
-                  Tes & Analisis
-                </p>
+                <h3 className="font-semibold text-black text-base">Laboratorium</h3>
               </div>
             </Link>
 
             {/* Radiologi */}
             <Link href="/services/radiology" className="group relative block">
               <div className="bg-white/10 rounded-2xl p-5 text-center border border-white/20 hover:border-red-400/50 hover:bg-white/30 hover:backdrop-blur-lg transition-all duration-300 hover:scale-105 shadow-lg hover:shadow-2xl group-hover:shadow-red-500/30 h-full">
-                <div className="w-14 h-14 bg-gradient-to-br from-red-500 to-rose-600 rounded-2xl flex items-center justify-center mx-auto mb-3 group-hover:scale-110 transition-transform duration-300">
+                <div className="w-14 h-14 bg-gradient-to-br from-red-500 to-rose-600 rounded-2xl flex items-center justify-center mx-auto mb-4 group-hover:scale-110 transition-transform duration-300">
                   <Scan className="h-6 w-6 text-white" />
                 </div>
-                <h3 className="font-semibold text-black text-base mb-1">Radiologi</h3>
-                <p className="text-sm text-red-200 opacity-0 group-hover:opacity-100 transition-opacity duration-300">
-                  Pencitraan Medis
-                </p>
+                <h3 className="font-semibold text-black text-base">Radiologi</h3>
               </div>
             </Link>
 
