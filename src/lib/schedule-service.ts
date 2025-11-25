@@ -4,6 +4,83 @@ import { createSupabaseServerClient } from '@/lib/supabase-server';
 import { auth } from '@clerk/nextjs/server';
 import { Schedule } from '@/lib/admin-types';
 
+// Fungsi bantu untuk mengonversi berbagai format waktu ke format 24 jam
+function convertTo24HourFormat(timeInput: string): string | null {
+  console.log('Processing timeInput:', timeInput, 'Type:', typeof timeInput);
+
+  // Pastikan input adalah string
+  if (typeof timeInput !== 'string') {
+    console.log('Input is not a string');
+    return null;
+  }
+
+  // Jika input dalam format HH:MM (24 jam), kembalikan langsung
+  if (/^\d{2}:\d{2}$/.test(timeInput)) {
+    const [hour, minute] = timeInput.split(':').map(Number);
+    if (hour >= 0 && hour <= 23 && minute >= 0 && minute <= 59) {
+      console.log('Matched HH:MM format:', timeInput);
+      return timeInput;
+    }
+    console.log('HH:MM format but invalid time values');
+    return null;
+  }
+
+  // Jika input dalam format HH:MM:SS (24 jam dengan detik), konversi ke HH:MM
+  if (/^\d{2}:\d{2}:\d{2}$/.test(timeInput)) {
+    const [hour, minute, second] = timeInput.split(':').map(Number);
+    if (hour >= 0 && hour <= 23 && minute >= 0 && minute <= 59 && second >= 0 && second <= 59) {
+      const result = `${hour.toString().padStart(2, '0')}:${minute.toString().padStart(2, '0')}`;
+      console.log('Matched HH:MM:SS format, converted to:', result);
+      return result;
+    }
+    console.log('HH:MM:SS format but invalid time values');
+    return null;
+  }
+
+  // Jika input dalam format AM/PM
+  const timeRegex = /^([0-9]|0[0-9]|1[0-2]):([0-5][0-9])\s*(AM|PM|am|pm)$/i;
+  if (timeRegex.test(timeInput)) {
+    const parts = timeInput.match(timeRegex);
+    if (parts) {
+      let [_, hour, minute, period] = parts;
+      let hourNum = parseInt(hour, 10);
+      const minuteNum = parseInt(minute, 10);
+
+      // Konversi AM/PM ke format 24 jam
+      if (period.toLowerCase() === 'pm' && hourNum !== 12) {
+        hourNum += 12;
+      } else if (period.toLowerCase() === 'am' && hourNum === 12) {
+        hourNum = 0;
+      }
+
+      const result = `${hourNum.toString().padStart(2, '0')}:${minuteNum.toString().padStart(2, '0')}`;
+      console.log('Matched AM/PM format, converted to:', result);
+      return result;
+    }
+  }
+
+  // Jika input dalam format ISO Date (misalnya dari input datetime-local)
+  if (timeInput.includes('T')) {
+    try {
+      const date = new Date(timeInput);
+      if (isNaN(date.getTime())) {
+        console.log('Invalid date from ISO string');
+        return null;
+      }
+      const result = `${date.getHours().toString().padStart(2, '0')}:${date.getMinutes().toString().padStart(2, '0')}`;
+      console.log('Matched ISO format, converted to:', result);
+      return result;
+    } catch (e) {
+      console.log('Error parsing ISO date:', e);
+      return null;
+    }
+  }
+
+  // Jika tidak cocok dengan format apa pun
+  console.log('No matching format found');
+  return null;
+}
+
 // Fungsi untuk mendapatkan semua jadwal dokter
 export async function getAllSchedules() {
   const { userId } = await auth();
@@ -38,7 +115,7 @@ export async function getAllSchedules() {
       .from('schedules')
       .select(`
         *,
-        doctors(name, specialty)
+        doctors!schedules_doctor_id_fkey(name, specialty)
       `)
       .order('doctor_id');
 
@@ -139,14 +216,34 @@ export async function createSchedule(scheduleData: {
   }
 
   // Validasi format waktu
-  const timeRegex = /^([01]\d|2[0-3]):([0-5]\d)$/;
-  if (!timeRegex.test(scheduleData.start_time) || !timeRegex.test(scheduleData.end_time)) {
-    throw new Error('Time format must be HH:MM (e.g., 09:00, 14:30)');
+  let validatedStartTime = null;
+  let validatedEndTime = null;
+
+  if (scheduleData.start_time) {
+    console.log('Input start_time:', scheduleData.start_time, 'Type:', typeof scheduleData.start_time);
+    validatedStartTime = convertTo24HourFormat(scheduleData.start_time);
+    console.log('Converted start_time:', validatedStartTime);
+    if (!validatedStartTime) {
+      throw new Error('Start time format must be HH:MM (e.g., 09:00, 14:30)');
+    }
+    scheduleData.start_time = validatedStartTime; // Gunakan format 24 jam yang diseragamkan
   }
 
-  // Validasi bahwa waktu mulai sebelum waktu selesai
-  if (scheduleData.start_time >= scheduleData.end_time) {
-    throw new Error('Start time must be earlier than end time');
+  if (scheduleData.end_time) {
+    console.log('Input end_time:', scheduleData.end_time, 'Type:', typeof scheduleData.end_time);
+    validatedEndTime = convertTo24HourFormat(scheduleData.end_time);
+    console.log('Converted end_time:', validatedEndTime);
+    if (!validatedEndTime) {
+      throw new Error('End time format must be HH:MM (e.g., 09:00, 14:30)');
+    }
+    scheduleData.end_time = validatedEndTime; // Gunakan format 24 jam yang diseragamkan
+  }
+
+  // Validasi bahwa waktu mulai sebelum waktu selesai (jika keduanya ada)
+  if (validatedStartTime && validatedEndTime) {
+    if (validatedStartTime >= validatedEndTime) {
+      throw new Error('Start time must be earlier than end time');
+    }
   }
 
   // Jika pengguna adalah admin, buat jadwal dokter baru
@@ -212,16 +309,36 @@ export async function updateSchedule(scheduleId: string, scheduleData: {
   }
 
   // Validasi input jika ada data yang disediakan
-  if (scheduleData.start_time && scheduleData.end_time) {
+  if (scheduleData.start_time || scheduleData.end_time) {
+    let validatedStartTime = null;
+    let validatedEndTime = null;
+
     // Validasi format waktu
-    const timeRegex = /^([01]\d|2[0-3]):([0-5]\d)$/;
-    if (!timeRegex.test(scheduleData.start_time) || !timeRegex.test(scheduleData.end_time)) {
-      throw new Error('Time format must be HH:MM (e.g., 09:00, 14:30)');
+    if (scheduleData.start_time) {
+      console.log('Input start_time:', scheduleData.start_time, 'Type:', typeof scheduleData.start_time);
+      validatedStartTime = convertTo24HourFormat(scheduleData.start_time);
+      console.log('Converted start_time:', validatedStartTime);
+      if (!validatedStartTime) {
+        throw new Error('Start time format must be HH:MM (e.g., 09:00, 14:30)');
+      }
+      scheduleData.start_time = validatedStartTime; // Gunakan format 24 jam yang diseragamkan
     }
 
-    // Validasi bahwa waktu mulai sebelum waktu selesai jika keduanya disediakan
-    if (scheduleData.start_time >= scheduleData.end_time) {
-      throw new Error('Start time must be earlier than end time');
+    if (scheduleData.end_time) {
+      console.log('Input end_time:', scheduleData.end_time, 'Type:', typeof scheduleData.end_time);
+      validatedEndTime = convertTo24HourFormat(scheduleData.end_time);
+      console.log('Converted end_time:', validatedEndTime);
+      if (!validatedEndTime) {
+        throw new Error('End time format must be HH:MM (e.g., 09:00, 14:30)');
+      }
+      scheduleData.end_time = validatedEndTime; // Gunakan format 24 jam yang diseragamkan
+    }
+
+    // Validasi bahwa waktu mulai sebelum waktu selesai (jika keduanya ada)
+    if (validatedStartTime && validatedEndTime) {
+      if (validatedStartTime >= validatedEndTime) {
+        throw new Error('Start time must be earlier than end time');
+      }
     }
   }
 
@@ -289,7 +406,7 @@ export async function getScheduleById(scheduleId: string) {
       .from('schedules')
       .select(`
         *,
-        doctors(name, specialty)
+        doctors!schedules_doctor_id_fkey(name, specialty)
       `)
       .eq('id', scheduleId)
       .single();
