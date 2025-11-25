@@ -57,10 +57,10 @@ export function FeaturedServices() {
       <section className="py-10 bg-transparent">
         <div className="container mx-auto px-4 md:px-6">
           <div className="text-center mb-8">
-            <h2 className="text-2xl md:text-3xl font-bold text-emerald-700 mb-1">
+            <h2 className="text-3xl md:text-4xl font-bold text-emerald-700 mb-1">
               Layanan Unggulan Kami
             </h2>
-            <p className="text-sm text-gray-600 max-w-md mx-auto">
+            <p className="text-base text-gray-600 max-w-md mx-auto">
               Pilihan layanan kesehatan terbaik dengan tenaga profesional dan teknologi modern.
             </p>
           </div>
@@ -75,34 +75,34 @@ export function FeaturedServices() {
                 <div className="relative aspect-[4/3] bg-gray-100 rounded-t-2xl animate-pulse"></div>
                 <div className="relative p-4 z-10">
                   <div className="flex items-center gap-2 mb-2">
-                    <div className="bg-gray-200 rounded-full w-8 h-8 animate-pulse"></div>
-                    <div className="bg-gray-200 h-4 flex-1 rounded animate-pulse"></div>
+                    <div className="bg-gray-200 rounded-full w-10 h-10 animate-pulse"></div>
+                    <div className="bg-gray-200 h-6 flex-1 rounded animate-pulse"></div>
                   </div>
 
                   <div className="space-y-2 mb-3">
-                    <div className="bg-gray-200 h-3 rounded w-full animate-pulse"></div>
-                    <div className="bg-gray-200 h-3 rounded w-4/5 animate-pulse"></div>
+                    <div className="bg-gray-200 h-5 rounded w-full animate-pulse"></div>
+                    <div className="bg-gray-200 h-5 rounded w-4/5 animate-pulse"></div>
                   </div>
 
                   <div className="flex flex-wrap gap-1 mb-3">
-                    <div className="bg-gray-200 text-[9px] px-1.5 py-0.5 rounded w-10 animate-pulse" />
-                    <div className="bg-gray-200 text-[9px] px-1.5 py-0.5 rounded w-12 animate-pulse" />
+                    <div className="bg-gray-200 text-base px-2 py-1 rounded w-14 animate-pulse" />
+                    <div className="bg-gray-200 text-base px-2 py-1 rounded w-16 animate-pulse" />
                   </div>
 
                   <div className="space-y-1 mb-3">
                     <div className="flex items-center">
-                      <div className="bg-gray-200 rounded-full w-3 h-3 mr-1 animate-pulse" />
-                      <div className="bg-gray-200 h-2 rounded w-24 animate-pulse" />
+                      <div className="bg-gray-200 rounded-full w-4 h-4 mr-1 animate-pulse" />
+                      <div className="bg-gray-200 h-4 rounded w-24 animate-pulse" />
                     </div>
                     <div className="flex items-center">
-                      <div className="bg-gray-200 rounded-full w-3 h-3 mr-1 animate-pulse" />
-                      <div className="bg-gray-200 h-2 rounded w-16 animate-pulse" />
+                      <div className="bg-gray-200 rounded-full w-4 h-4 mr-1 animate-pulse" />
+                      <div className="bg-gray-200 h-4 rounded w-16 animate-pulse" />
                     </div>
                   </div>
 
                   <div className="grid grid-cols-2 gap-2 mb-3">
-                    <div className="bg-gray-200 h-8 rounded-md animate-pulse"></div>
-                    <div className="bg-gray-200 h-8 rounded-md animate-pulse"></div>
+                    <div className="bg-gray-200 h-10 rounded-md animate-pulse"></div>
+                    <div className="bg-gray-200 h-10 rounded-md animate-pulse"></div>
                   </div>
                 </div>
               </div>
@@ -127,12 +127,12 @@ export function FeaturedServices() {
   if (services.length === 0) {
     return (
       <div className="py-12 text-center">
-        <p className="text-muted-foreground mb-3">Belum ada layanan unggulan yang tersedia.</p>
-        <p className="text-sm text-muted-foreground/80 mb-4">Silakan periksa kembali nanti atau hubungi administrator untuk informasi lebih lanjut.</p>
+        <p className="text-lg text-muted-foreground mb-3">Belum ada layanan unggulan yang tersedia.</p>
+        <p className="text-base text-muted-foreground/80 mb-4">Silakan periksa kembali nanti atau hubungi administrator untuk informasi lebih lanjut.</p>
         <Button
           onClick={() => window.location.reload()}
           variant="outline"
-          className="border-emerald-400 text-emerald-600 hover:bg-emerald-50"
+          className="border-emerald-400 text-emerald-600 hover:bg-emerald-50 text-base"
         >
           Muat Ulang Halaman
         </Button>
@@ -144,10 +144,10 @@ export function FeaturedServices() {
     <section className="py-10 bg-transparent">
       <div className="container mx-auto px-4 md:px-6">
         <div className="text-center mb-8">
-          <h2 className="text-2xl md:text-3xl font-bold text-emerald-700 mb-1">
+          <h2 className="text-3xl md:text-4xl font-bold text-emerald-700 mb-1">
             Layanan Unggulan Kami
           </h2>
-          <p className="text-sm text-gray-600 max-w-md mx-auto">
+          <p className="text-base text-gray-600 max-w-md mx-auto">
             Pilihan layanan kesehatan terbaik dengan tenaga profesional dan teknologi modern.
           </p>
         </div>
@@ -183,17 +183,17 @@ export function FeaturedServices() {
                 <div className="relative p-4 z-10">
                   <div className="flex items-center gap-2 mb-2">
                     <div className="bg-emerald-100 p-1.5 rounded-full">
-                      <Icon className="h-4 w-4 text-emerald-600" />
+                      <Icon className="h-5 w-5 text-emerald-600" />
                     </div>
-                    <h3 className="text-sm font-semibold text-gray-800 truncate">
+                    <h3 className="text-lg font-bold text-gray-800 truncate">
                       {service.title}
                     </h3>
                   </div>
 
                   {service.description ? (
-                    <div className="text-xs text-gray-600 line-clamp-2 mb-3" dangerouslySetInnerHTML={{ __html: service.description }} />
+                    <div className="text-base text-gray-700 font-medium line-clamp-2 mb-3" dangerouslySetInnerHTML={{ __html: service.description }} />
                   ) : (
-                    <p className="text-xs text-gray-600 line-clamp-2 mb-3">
+                    <p className="text-base text-gray-700 font-medium line-clamp-2 mb-3">
                       Tidak ada deskripsi tersedia.
                     </p>
                   )}
@@ -203,7 +203,7 @@ export function FeaturedServices() {
                     {service.features?.slice(0, 2).map((feature, i) => (
                       <Badge
                         key={i}
-                        className="bg-gradient-to-r from-emerald-100 to-emerald-200 text-emerald-800 text-[9px] px-1.5 py-0.5 border border-emerald-200"
+                        className="bg-gradient-to-r from-emerald-100 to-emerald-200 text-emerald-800 text-sm px-2 py-1 border border-emerald-200 font-medium"
                       >
                         {feature}
                       </Badge>
@@ -211,7 +211,7 @@ export function FeaturedServices() {
                     {service.features && service.features.length > 2 && (
                       <Badge
                         variant="outline"
-                        className="text-emerald-600 border-emerald-300 text-[9px] px-1.5 py-0.5"
+                        className="text-emerald-600 border-emerald-300 text-sm px-2 py-1 font-medium"
                       >
                         +{service.features.length - 2}
                       </Badge>
@@ -219,22 +219,22 @@ export function FeaturedServices() {
                   </div>
 
                   {/* Info */}
-                  <div className="space-y-0.5 mb-3 text-[10px] text-gray-500">
+                  <div className="space-y-0.5 mb-3 text-base text-gray-600 font-medium">
                     {service.location && (
                       <div className="flex items-center">
-                        <MapPin className="h-2.5 w-2.5 mr-1 text-emerald-500" />
+                        <MapPin className="h-4 w-4 mr-1 text-emerald-500" />
                         <span className="truncate">{service.location}</span>
                       </div>
                     )}
                     {service.operating_hours && (
                       <div className="flex items-center">
-                        <Clock className="h-2.5 w-2.5 mr-1 text-emerald-500" />
+                        <Clock className="h-4 w-4 mr-1 text-emerald-500" />
                         <span>{service.operating_hours}</span>
                       </div>
                     )}
                     {service.contact_info && (
                       <div className="flex items-center">
-                        <Phone className="h-2.5 w-2.5 mr-1 text-emerald-500" />
+                        <Phone className="h-4 w-4 mr-1 text-emerald-500" />
                         <span>{service.contact_info}</span>
                       </div>
                     )}
@@ -245,17 +245,17 @@ export function FeaturedServices() {
                     <Button
                       asChild
                       variant="outline"
-                      className="text-emerald-600 border-emerald-600 text-[10px] py-1.5 rounded-md shadow-sm hover:shadow-md transition-all"
+                      className="text-emerald-600 border-emerald-600 text-base py-2 rounded-md shadow-sm hover:shadow-md transition-all font-semibold"
                     >
                       <Link href={`/services/featured/${service.id}`}>Lihat Detail</Link>
                     </Button>
                     <Button
                       asChild
                       variant="outline"
-                      className="text-gray-600 border-gray-400 text-[10px] py-1.5 rounded-md shadow-sm hover:shadow-md transition-all"
+                      className="text-gray-600 border-gray-400 text-base py-2 rounded-md shadow-sm hover:shadow-md transition-all font-semibold"
                     >
                       <Link href={`/api/khanza/schedule?serviceId=${service.id}`} target="_blank">
-                        <Calendar className="h-3 w-3 mr-1" />
+                        <Calendar className="h-4 w-4 mr-1" />
                         Jadwal
                       </Link>
                     </Button>

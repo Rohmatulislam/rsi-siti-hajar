@@ -100,15 +100,81 @@ interface AboutContentDB {
   updated_at: string;
 }
 
+// Fungsi helper untuk mengonversi berbagai tipe data ke string
+const convertToString = (data: any): string => {
+  // Jika data adalah string mungkin berisi JSON
+  if (typeof data === 'string') {
+    try {
+      // Coba parse sebagai JSON
+      const parsed = JSON.parse(data);
+      // Jika berhasil diparse, proses hasilnya
+      if (Array.isArray(parsed)) {
+        return parsed.map(item =>
+          typeof item === 'string' ? item :
+          typeof item === 'object' ?
+            Object.values(item).filter(val => val !== null && val !== undefined).join(', ') :
+            String(item)
+        ).join(', ');
+      } else if (typeof parsed === 'object' && parsed !== null) {
+        return Object.values(parsed).filter(val => val !== null && val !== undefined).join(', ');
+      } else {
+        return String(parsed);
+      }
+    } catch (e) {
+      // Jika bukan JSON valid, kembalikan sebagai string
+      return data;
+    }
+  }
+  // Jika data adalah array
+  else if (Array.isArray(data)) {
+    return data.map(item => {
+      if (typeof item === 'string') {
+        return item;
+      } else if (typeof item === 'object' && item !== null) {
+        if (Array.isArray(item)) {
+          return convertToString(item);
+        } else {
+          return Object.values(item).filter(val => val !== null && val !== undefined).join(', ');
+        }
+      } else {
+        return String(item);
+      }
+    }).join(', ');
+  }
+  // Jika data adalah object
+  else if (typeof data === 'object' && data !== null) {
+    // Cek apakah ini "[object Object]" hasil dari toString
+    if (data.toString && data.toString() !== '[object Object]') {
+      return data.toString();
+    } else {
+      // Ambil semua nilai dari object
+      try {
+        const values = Object.values(data).filter(val => val !== null && val !== undefined);
+        return values.map(val =>
+          typeof val === 'string' ? val :
+          typeof val === 'object' ? JSON.stringify(Object.values(val)).replace(/[\[\]"]/g, '') :
+          String(val)
+        ).join(', ');
+      } catch (e) {
+        return JSON.stringify(data).replace(/[\[\]"]/g, '');
+      }
+    }
+  }
+  // Jika tipe data lain
+  else {
+    return String(data || '');
+  }
+};
+
 // Service untuk manajemen konten tentang kami
 export const getAboutContent = async () => {
   const supabase = await createSupabaseServerClient(true);
-  
+
   const { data, error } = await supabase
     .from('about_content')
     .select('*')
     .single();
-  
+
   if (error) {
     // Jika tidak ditemukan, buat default
     if (error.code === 'PGRST116') {
@@ -116,8 +182,11 @@ export const getAboutContent = async () => {
     }
     throw new Error(error.message);
   }
-  
+
   // Konversi dari struktur database ke interface AboutContent
+  const missionString = convertToString(data.misi);
+  const valuesString = convertToString(data.values);
+
   const aboutContent: AboutContent = {
     id: data.id.toString(),
     title: 'Tentang RSI Siti Hajar',
@@ -126,8 +195,8 @@ export const getAboutContent = async () => {
     hero_image: data.image_url || null,
     history: data.history || '',
     vision: data.visi || '',
-    mission: Array.isArray(data.misi) ? (data.misi as string[]).join(', ') : (typeof data.misi === 'string' ? data.misi : ''),
-    values: Array.isArray(data.values) ? (data.values as string[]).join(', ') : (typeof data.values === 'string' ? data.values : ''),
+    mission: missionString,
+    values: valuesString,
     commitment: data.commitment || '',
     achievements: [],
     team: [],
@@ -135,7 +204,7 @@ export const getAboutContent = async () => {
     created_at: new Date().toISOString(),
     updated_at: data.updated_at
   };
-  
+
   return aboutContent;
 };
 
@@ -183,28 +252,38 @@ export const updateAboutContent = async (id: string, content: Partial<AboutConte
     .update(dbContent)
     .eq('id', id)
     .select();
-  
+
   if (error) {
     throw new Error(error.message);
   }
-  
+
+  if (!data || data.length === 0) {
+    throw new Error('No data returned from update operation');
+  }
+
+  // Ambil data pertama dari hasil update
+  const updatedData = data[0];
+
   // Mengembalikan dalam format AboutContent
+  const updatedMissionString = convertToString(updatedData.misi);
+  const updatedValuesString = convertToString(updatedData.values);
+
   const updatedContent: AboutContent = {
-    id: data.id.toString(),
+    id: updatedData.id.toString(),
     title: 'Tentang RSI Siti Hajar',
     hero_title: 'Tentang RSI Siti Hajar',
     hero_description: 'Rumah Sakit Islam Siti Hajar Mataram, rumah sakit modern dengan pendekatan islami yang memberikan pelayanan kesehatan terbaik di Nusa Tenggara Barat',
-    hero_image: data.image_url || null,
-    history: data.history || '',
-    vision: data.visi || '',
-    mission: Array.isArray(data.misi) ? (data.misi as string[]).join(', ') : (typeof data.misi === 'string' ? data.misi : ''),
-    values: Array.isArray(data.values) ? (data.values as string[]).join(', ') : (typeof data.values === 'string' ? data.values : ''),
-    commitment: data.commitment || '',
+    hero_image: updatedData.image_url || null,
+    history: updatedData.history || '',
+    vision: updatedData.visi || '',
+    mission: updatedMissionString,
+    values: updatedValuesString,
+    commitment: updatedData.commitment || '',
     achievements: [],
     team: [],
     founders: [],
     created_at: new Date().toISOString(),
-    updated_at: data.updated_at
+    updated_at: updatedData.updated_at
   };
   
   return updatedContent;
@@ -229,12 +308,15 @@ export const createDefaultAboutContent = async () => {
     .insert([defaultContent])
     .select()
     .single();
-  
+
   if (error) {
     throw new Error(error.message);
   }
-  
+
   // Mengembalikan dalam format AboutContent
+  const defaultMissionString = convertToString(data.misi);
+  const defaultValuesString = convertToString(data.values);
+
   const aboutContent: AboutContent = {
     id: data.id.toString(),
     title: 'Tentang RSI Siti Hajar',
@@ -243,8 +325,8 @@ export const createDefaultAboutContent = async () => {
     hero_image: data.image_url || null,
     history: data.history || '',
     vision: data.visi || '',
-    mission: Array.isArray(data.misi) ? (data.misi as string[]).join(', ') : (typeof data.misi === 'string' ? data.misi : ''),
-    values: Array.isArray(data.values) ? (data.values as string[]).join(', ') : (typeof data.values === 'string' ? data.values : ''),
+    mission: defaultMissionString,
+    values: defaultValuesString,
     commitment: data.commitment || '',
     achievements: [],
     team: [],

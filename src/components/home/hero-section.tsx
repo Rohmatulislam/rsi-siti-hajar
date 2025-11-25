@@ -63,7 +63,7 @@ export function HeroSection() {
                 <Star className="h-3 w-3 text-yellow-400 fill-yellow-400" />
                 <Star className="h-3 w-3 text-yellow-400 fill-yellow-400" />
               </div>
-              <span className="text-xs font-medium text-white">
+              <span className="text-xs font-medium text-black">
                 Rumah Sakit Islam Terpercaya di NTB
               </span>
             </div>
@@ -84,7 +84,7 @@ export function HeroSection() {
                 </span>
               </h1>
 
-              <p className="text-sm sm:text-base md:text-lg lg:text-xl text-white max-w-4xl leading-relaxed mb-6">
+              <p className="text-sm sm:text-base md:text-lg lg:text-xl text-black max-w-4xl leading-relaxed mb-6">
                 Memberikan pelayanan kesehatan terbaik dengan teknologi modern
                 dan tenaga medis profesional di Mataram
               </p>
@@ -128,8 +128,8 @@ export function HeroSection() {
                 <div className="w-14 h-14 bg-gradient-to-br from-emerald-500 to-teal-600 rounded-2xl flex items-center justify-center mx-auto mb-3 group-hover:scale-110 transition-transform duration-300">
                   <Stethoscope className="h-6 w-6 text-white" />
                 </div>
-                <h3 className="font-medium text-black text-[0.7rem] mb-1">Cari Dokter</h3>
-                <p className="text-[0.5rem] text-emerald-200 opacity-0 group-hover:opacity-100 transition-opacity duration-300">
+                <h3 className="font-semibold text-black text-base mb-1">Cari Dokter</h3>
+                <p className="text-sm text-emerald-200 opacity-0 group-hover:opacity-100 transition-opacity duration-300">
                   Dokter Spesialis
                 </p>
               </div>
@@ -141,8 +141,8 @@ export function HeroSection() {
                 <div className="w-14 h-14 bg-gradient-to-br from-amber-500 to-orange-600 rounded-2xl flex items-center justify-center mx-auto mb-3 group-hover:scale-110 transition-transform duration-300">
                   <Star className="h-6 w-6 text-white" />
                 </div>
-                <h3 className="font-medium text-black text-[0.7rem] mb-1">Layanan Unggulan</h3>
-                <p className="text-[0.5rem] text-amber-200 opacity-0 group-hover:opacity-100 transition-opacity duration-300">
+                <h3 className="font-semibold text-black text-base mb-1">Layanan Unggulan</h3>
+                <p className="text-sm text-amber-200 opacity-0 group-hover:opacity-100 transition-opacity duration-300">
                   Fasilitas Terbaik
                 </p>
               </div>
@@ -154,8 +154,8 @@ export function HeroSection() {
                 <div className="w-14 h-14 bg-gradient-to-br from-amber-500 to-orange-600 rounded-2xl flex items-center justify-center mx-auto mb-3 group-hover:scale-110 transition-transform duration-300">
                   <Crown className="h-6 w-6 text-white" />
                 </div>
-                <h3 className="font-medium text-black text-[0.7rem] mb-1">Poli Executive</h3>
-                <p className="text-[0.5rem] text-amber-200 opacity-0 group-hover:opacity-100 transition-opacity duration-300">
+                <h3 className="font-semibold text-black text-base mb-1">Poli Executive</h3>
+                <p className="text-sm text-amber-200 opacity-0 group-hover:opacity-100 transition-opacity duration-300">
                   Pelayanan Premium
                 </p>
               </div>
@@ -167,8 +167,8 @@ export function HeroSection() {
                 <div className="w-14 h-14 bg-gradient-to-br from-blue-500 to-indigo-600 rounded-2xl flex items-center justify-center mx-auto mb-3 group-hover:scale-110 transition-transform duration-300">
                   <Activity className="h-6 w-6 text-white" />
                 </div>
-                <h3 className="font-medium text-black text-[0.7rem] mb-1">Medical Check Up</h3>
-                <p className="text-[0.5rem] text-blue-200 opacity-0 group-hover:opacity-100 transition-opacity duration-300">
+                <h3 className="font-semibold text-black text-base mb-1">Medical Check Up</h3>
+                <p className="text-sm text-blue-200 opacity-0 group-hover:opacity-100 transition-opacity duration-300">
                   Pemeriksaan Lengkap
                 </p>
               </div>
@@ -180,8 +180,8 @@ export function HeroSection() {
                 <div className="w-14 h-14 bg-gradient-to-br from-purple-500 to-pink-600 rounded-2xl flex items-center justify-center mx-auto mb-3 group-hover:scale-110 transition-transform duration-300">
                   <Microscope className="h-6 w-6 text-white" />
                 </div>
-                <h3 className="font-medium text-black text-[0.7rem] mb-1">Laboratorium</h3>
-                <p className="text-[0.5rem] text-purple-200 opacity-0 group-hover:opacity-100 transition-opacity duration-300">
+                <h3 className="font-semibold text-black text-base mb-1">Laboratorium</h3>
+                <p className="text-sm text-purple-200 opacity-0 group-hover:opacity-100 transition-opacity duration-300">
                   Tes & Analisis
                 </p>
               </div>
@@ -193,8 +193,8 @@ export function HeroSection() {
                 <div className="w-14 h-14 bg-gradient-to-br from-red-500 to-rose-600 rounded-2xl flex items-center justify-center mx-auto mb-3 group-hover:scale-110 transition-transform duration-300">
                   <Scan className="h-6 w-6 text-white" />
                 </div>
-                <h3 className="font-medium text-black text-[0.7rem] mb-1">Radiologi</h3>
-                <p className="text-[0.5rem] text-red-200 opacity-0 group-hover:opacity-100 transition-opacity duration-300">
+                <h3 className="font-semibold text-black text-base mb-1">Radiologi</h3>
+                <p className="text-sm text-red-200 opacity-0 group-hover:opacity-100 transition-opacity duration-300">
                   Pencitraan Medis
                 </p>
               </div>
@@ -214,18 +214,18 @@ export function HeroSection() {
           >
             <div className="inline-flex flex-wrap justify-center items-center gap-3 text-white">
               <div className="text-center min-w-[60px]">
-                <div className="text-sm sm:text-base font-bold text-white">50+</div>
-                <div className="text-[0.6rem] sm:text-xs text-white">Dokter Spesialis</div>
+                <div className="text-base sm:text-lg font-bold text-white">50+</div>
+                <div className="text-sm sm:text-base font-medium text-white">Dokter Spesialis</div>
               </div>
               <div className="w-1 h-3 bg-emerald-400/30 rounded-full hidden sm:block"></div>
               <div className="text-center min-w-[60px]">
-                <div className="text-sm sm:text-base font-bold text-white">24/7</div>
-                <div className="text-[0.6rem] sm:text-xs text-white">Layanan IGD</div>
+                <div className="text-base sm:text-lg font-bold text-white">24/7</div>
+                <div className="text-sm sm:text-base font-medium text-white">Layanan IGD</div>
               </div>
               <div className="w-1 h-3 bg-emerald-400/30 rounded-full hidden sm:block"></div>
               <div className="text-center min-w-[60px]">
-                <div className="text-sm sm:text-base font-bold text-white">99%</div>
-                <div className="text-[0.6rem] sm:text-xs text-white">Kepuasan Pasien</div>
+                <div className="text-base sm:text-lg font-bold text-white">99%</div>
+                <div className="text-sm sm:text-base font-medium text-white">Kepuasan Pasien</div>
               </div>
             </div>
           </MotionDiv>
