@@ -71,7 +71,7 @@ export default function AboutPageClient({ content, founders }: AboutPageClientPr
       <Navbar />
       <div className="flex-grow bg-gradient-to-b from-white to-gray-50 dark:from-gray-900 dark:to-gray-950">
         {/* Hero Section - Meningkatkan tinggi section tanpa background gradient */}
-        <div className="relative overflow-hidden bg-white dark:bg-gray-900 py-40 md:py-48 lg:py-56">
+        <div className="relative overflow-hidden bg-white dark:bg-gray-900 py-40 md:py-48 lg:py-56 pb-12">
           <div className="absolute inset-0 bg-black/10 dark:bg-black/20"></div>
           {content.hero_image ? (
             <div className="absolute inset-0 bg-cover bg-center opacity-30" style={{ backgroundImage: `url(${content.hero_image})` }}></div>
@@ -99,7 +99,7 @@ export default function AboutPageClient({ content, founders }: AboutPageClientPr
         <div className="container mx-auto px-4 sm:px-6 lg:px-8 py-16 -mt-20">
           {/* Sejarah Singkat */}
           <motion.section
-            className="mb-20"
+            className="mb-20 mt-12"
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             transition={{ duration: 0.6, delay: 0.2 }}
